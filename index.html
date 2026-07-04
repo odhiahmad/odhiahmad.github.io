@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Odhi Ahmad Hidayat — Full Stack Developer</title>
-<meta name="description" content="Portfolio of Odhi Ahmad Hidayat, Full Stack Developer building Android, iOS, and Web applications with Go, Flutter, React, and React Native.">
+<meta name="description" content="Portfolio & CV of Odhi Ahmad Hidayat, Full Stack Developer building Android, iOS, and Web applications with Go, Flutter, React, and React Native.">
 <meta property="og:title" content="Odhi Ahmad Hidayat — Full Stack Developer">
 <meta property="og:description" content="Full Stack Developer building Android, iOS, and Web applications.">
 <meta property="og:type" content="website">
@@ -22,6 +22,7 @@
     --accent-soft: rgba(79, 156, 255, 0.12);
     --accent-2: #34d399;
     --accent-2-soft: rgba(52, 211, 153, 0.12);
+    --accent-3: #a78bfa;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -31,30 +32,59 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
   .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 
-  /* Nav */
+  /* ============ Scroll reveal ============ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .reveal.from-left  { transform: translateX(-48px); }
+  .reveal.from-right { transform: translateX(48px); }
+  .reveal.zoom       { transform: scale(0.92); }
+  .reveal.visible    { opacity: 1; transform: none; }
+
+  /* ============ Nav ============ */
   nav {
-    position: sticky; top: 0; z-index: 10;
+    position: sticky; top: 0; z-index: 20;
     background: rgba(11, 15, 20, 0.85);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-inner {
-    display: flex; align-items: center; justify-content: space-between;
-    height: 60px;
-  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
   .nav-logo { font-weight: 700; font-size: 1.05rem; color: var(--text); }
   .nav-logo span { color: var(--accent); }
   .nav-links { display: flex; gap: 24px; }
-  .nav-links a { color: var(--muted); font-size: 0.92rem; }
+  .nav-links a { color: var(--muted); font-size: 0.92rem; position: relative; }
+  .nav-links a::after {
+    content: ""; position: absolute; left: 0; bottom: -4px;
+    width: 0; height: 2px; background: var(--accent);
+    transition: width 0.25s ease;
+  }
   .nav-links a:hover { color: var(--text); text-decoration: none; }
+  .nav-links a:hover::after { width: 100%; }
 
-  /* Hero */
-  header { padding: 96px 0 72px; }
+  /* ============ Hero ============ */
+  header { padding: 110px 0 80px; position: relative; }
+  .blob {
+    position: absolute; border-radius: 50%; filter: blur(90px);
+    opacity: 0.35; pointer-events: none; z-index: -1;
+    animation: float 14s ease-in-out infinite;
+  }
+  .blob-1 { width: 420px; height: 420px; background: #1f4fd8; top: -120px; right: -80px; }
+  .blob-2 { width: 340px; height: 340px; background: #0f8a5f; bottom: -140px; left: -100px; animation-delay: -5s; }
+  .blob-3 { width: 260px; height: 260px; background: #6d28d9; top: 40%; left: 55%; animation-delay: -9s; opacity: 0.22; }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(36px, -28px) scale(1.08); }
+    66%      { transform: translate(-24px, 24px) scale(0.94); }
+  }
   .hero-kicker {
     display: inline-block;
     background: var(--accent-2-soft); color: var(--accent-2);
@@ -62,29 +92,62 @@
     padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
   }
   h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.15; font-weight: 800; }
-  h1 .accent { color: var(--accent); }
-  .hero-sub {
-    margin-top: 20px; max-width: 640px;
-    color: var(--muted); font-size: 1.12rem;
+  h1 .accent {
+    background: linear-gradient(90deg, var(--accent), var(--accent-3), var(--accent-2), var(--accent));
+    background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: gradient-slide 8s linear infinite;
   }
+  @keyframes gradient-slide { to { background-position: 300% 0; } }
+  .typed-line { min-height: 1.3em; display: block; }
+  .caret {
+    display: inline-block; width: 3px; height: 0.95em; margin-left: 3px;
+    background: var(--accent); vertical-align: -0.12em;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hero-sub { margin-top: 20px; max-width: 640px; color: var(--muted); font-size: 1.12rem; }
   .hero-actions { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
   .btn {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 0.95rem;
-    transition: transform 0.15s ease, background 0.15s ease;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
   }
   .btn:hover { text-decoration: none; transform: translateY(-2px); }
   .btn-primary { background: var(--accent); color: #071018; }
-  .btn-primary:hover { background: #6cadff; }
+  .btn-primary:hover { background: #6cadff; box-shadow: 0 8px 28px rgba(79, 156, 255, 0.35); }
   .btn-ghost { border: 1px solid var(--border); color: var(--text); }
   .btn-ghost:hover { background: var(--bg-soft); }
+  .btn-glow { position: relative; overflow: hidden; }
+  .btn-glow::after {
+    content: ""; position: absolute; top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(105deg, transparent, rgba(255,255,255,0.35), transparent);
+    animation: shine 3.2s ease-in-out infinite;
+  }
+  @keyframes shine { 0%, 55% { left: -80%; } 100% { left: 160%; } }
 
-  /* Sections */
+  /* ============ Stats ============ */
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px; margin-top: 56px;
+  }
+  .stat {
+    border: 1px solid var(--border); border-radius: 14px;
+    background: var(--card); padding: 22px 18px; text-align: center;
+  }
+  .stat .num {
+    font-size: 2rem; font-weight: 800; color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .label { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+
+  /* ============ Sections ============ */
   section { padding: 64px 0; }
   .section-title { font-size: 1.7rem; font-weight: 750; margin-bottom: 8px; }
   .section-sub { color: var(--muted); margin-bottom: 36px; max-width: 620px; }
 
-  /* Featured project */
+  /* ============ Featured ============ */
   .featured {
     border: 1px solid var(--border);
     background: linear-gradient(145deg, var(--card), var(--bg-soft));
@@ -96,7 +159,9 @@
     position: absolute; top: -120px; right: -120px;
     width: 300px; height: 300px; border-radius: 50%;
     background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+    animation: pulse-glow 6s ease-in-out infinite;
   }
+  @keyframes pulse-glow { 50% { transform: scale(1.35); opacity: 0.7; } }
   .featured-badge {
     display: inline-block; background: var(--accent-soft); color: var(--accent);
     font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
@@ -112,22 +177,28 @@
   .featured-item {
     background: rgba(255,255,255,0.03); border: 1px solid var(--border);
     border-radius: 12px; padding: 16px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
   }
+  .featured-item:hover { transform: translateY(-4px); border-color: var(--accent); }
   .featured-item strong { display: block; font-size: 0.95rem; margin-bottom: 4px; }
   .featured-item span { color: var(--muted); font-size: 0.85rem; }
 
-  /* Project cards */
-  .grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-  }
+  /* ============ Project cards ============ */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
   .card {
     background: var(--card); border: 1px solid var(--border);
     border-radius: 14px; padding: 24px;
     display: flex; flex-direction: column;
-    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    position: relative;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
-  .card:hover { transform: translateY(-4px); background: var(--card-hover); border-color: #31415f; }
+  .card::before {
+    content: ""; position: absolute; inset: 0; border-radius: 14px;
+    background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(79,156,255,0.08), transparent 40%);
+    opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+  }
+  .card:hover { transform: translateY(-6px); border-color: #31415f; box-shadow: 0 14px 40px rgba(0,0,0,0.4); }
+  .card:hover::before { opacity: 1; }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
   .card h3 { font-size: 1.15rem; font-weight: 700; }
   .card .year { color: var(--muted); font-size: 0.82rem; white-space: nowrap; margin-left: 12px; }
@@ -141,20 +212,88 @@
     padding: 4px 10px; border-radius: 999px;
   }
 
-  /* Skills */
+  /* ============ CV / Experience timeline ============ */
+  .cv-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap; margin-bottom: 36px;
+  }
+  .cv-head .section-sub { margin-bottom: 0; }
+  .timeline { position: relative; padding-left: 34px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 10px; top: 6px; bottom: 6px;
+    width: 3px; border-radius: 3px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-3), var(--accent-2));
+    transform: scaleY(0); transform-origin: top;
+    transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .timeline.visible::before { transform: scaleY(1); }
+  .tl-item { position: relative; padding: 0 0 40px 24px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot {
+    position: absolute; left: -31px; top: 6px;
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--accent); border: 3px solid var(--bg);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .tl-item:nth-child(odd) .tl-dot { background: var(--accent-2); box-shadow: 0 0 0 3px var(--accent-2-soft); }
+  .tl-dot::after {
+    content: ""; position: absolute; inset: -3px; border-radius: 50%;
+    border: 2px solid currentColor; color: var(--accent); opacity: 0;
+    animation: ping 2.6s ease-out infinite;
+  }
+  @keyframes ping {
+    0%   { transform: scale(0.8); opacity: 0.8; }
+    70%  { transform: scale(2.1); opacity: 0; }
+    100% { opacity: 0; }
+  }
+  .tl-date {
+    display: inline-block; font-size: 0.78rem; font-weight: 700;
+    color: var(--accent); background: var(--accent-soft);
+    padding: 3px 12px; border-radius: 999px; margin-bottom: 8px;
+    letter-spacing: 0.04em;
+  }
+  .tl-item h3 { font-size: 1.18rem; font-weight: 750; }
+  .tl-item .place { color: var(--accent-2); font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
+  .tl-item p { color: var(--muted); font-size: 0.94rem; max-width: 680px; }
+  .tl-item ul { margin: 10px 0 0 18px; color: var(--muted); font-size: 0.92rem; }
+  .tl-item li { margin-bottom: 4px; }
+
+  .cv-download {
+    margin-top: 48px;
+    border: 1px dashed var(--border); border-radius: 16px;
+    background: var(--bg-soft);
+    padding: 32px; text-align: center;
+  }
+  .cv-download h3 { font-size: 1.25rem; margin-bottom: 6px; }
+  .cv-download p { color: var(--muted); margin-bottom: 20px; font-size: 0.95rem; }
+
+  /* ============ Skills ============ */
   .skills { display: flex; flex-wrap: wrap; gap: 10px; }
   .skill {
     border: 1px solid var(--border); background: var(--card);
     padding: 9px 18px; border-radius: 999px;
     font-size: 0.9rem; font-weight: 500; color: var(--text);
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+  .skill:hover {
+    transform: translateY(-3px) scale(1.05);
+    border-color: var(--accent); background: var(--accent-soft);
   }
 
-  /* Contact */
+  /* ============ Contact ============ */
   .contact-card {
     border: 1px solid var(--border); border-radius: 18px;
     background: linear-gradient(145deg, var(--card), var(--bg-soft));
     padding: 48px 36px; text-align: center;
+    position: relative; overflow: hidden;
   }
+  .contact-card::before {
+    content: ""; position: absolute; inset: -2px; border-radius: 18px; z-index: -1;
+    background: conic-gradient(from var(--angle, 0deg), transparent 70%, var(--accent), transparent);
+    animation: rotate-border 5s linear infinite;
+  }
+  @property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+  @keyframes rotate-border { to { --angle: 360deg; } }
   .contact-card h2 { font-size: 1.8rem; margin-bottom: 10px; }
   .contact-card p { color: var(--muted); margin-bottom: 28px; }
 
@@ -166,8 +305,14 @@
 
   @media (max-width: 640px) {
     .nav-links { display: none; }
-    header { padding: 64px 0 48px; }
+    header { padding: 70px 0 52px; }
     .featured { padding: 26px 20px; }
+    .timeline { padding-left: 28px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    .timeline::before { transform: scaleY(1); }
   }
 </style>
 </head>
@@ -179,6 +324,7 @@
     <div class="nav-links">
       <a href="#featured">Featured</a>
       <a href="#projects">Projects</a>
+      <a href="#cv">CV</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </div>
@@ -186,28 +332,41 @@
 </nav>
 
 <header>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
   <div class="container">
-    <span class="hero-kicker">Android · iOS · Web</span>
-    <h1>Hi, I'm <span class="accent">Odhi Ahmad Hidayat</span><br>Full Stack Developer</h1>
+    <span class="hero-kicker reveal visible">Android · iOS · Web</span>
+    <h1>
+      Hi, I'm <span class="accent">Odhi Ahmad Hidayat</span>
+      <span class="typed-line"><span id="typed"></span><span class="caret"></span></span>
+    </h1>
     <p class="hero-sub">
       I build end-to-end products — from Go backends and React dashboards to Flutter
       and React Native apps shipped to the Play Store and App Store. Based in Indonesia,
       working across fintech, government, healthcare, and retail.
     </p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#featured">View My Work</a>
+      <a class="btn btn-primary btn-glow" href="#featured">View My Work</a>
+      <a class="btn btn-ghost" href="cv-odhi-ahmad.pdf" download>⬇ Download CV</a>
       <a class="btn btn-ghost" href="https://github.com/odhiahmad" target="_blank" rel="noopener">GitHub ↗</a>
-      <a class="btn btn-ghost" href="mailto:odhiahmad15@gmail.com">Email Me</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat reveal" style="--d: 0s"><div class="num" data-count="11">0</div><div class="label">Apps & Systems Shipped</div></div>
+      <div class="stat reveal" style="--d: 0.1s"><div class="num" data-count="6">0</div><div class="label">Years of Experience</div></div>
+      <div class="stat reveal" style="--d: 0.2s"><div class="num" data-count="4">0</div><div class="label">Industries Served</div></div>
+      <div class="stat reveal" style="--d: 0.3s"><div class="num" data-count="8">0</div><div class="label">Tech Stacks Mastered</div></div>
     </div>
   </div>
 </header>
 
 <section id="featured">
   <div class="container">
-    <h2 class="section-title">Featured Project</h2>
-    <p class="section-sub">The product I'm building end-to-end: backend, web, and mobile.</p>
+    <h2 class="section-title reveal">Featured Project</h2>
+    <p class="section-sub reveal">The product I'm building end-to-end: backend, web, and mobile.</p>
 
-    <div class="featured">
+    <div class="featured reveal zoom">
       <span class="featured-badge">Flagship · 2024 — Present</span>
       <h3>Loka Kasir</h3>
       <div class="role">Founder & Full Stack Developer</div>
@@ -247,12 +406,12 @@
 
 <section id="projects">
   <div class="container">
-    <h2 class="section-title">Selected Projects</h2>
-    <p class="section-sub">Apps I've built and shipped for hospitals, government agencies, banks, and startups.</p>
+    <h2 class="section-title reveal">Selected Projects</h2>
+    <p class="section-sub reveal">Apps I've built and shipped for hospitals, government agencies, banks, and startups.</p>
 
     <div class="grid">
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0s">
         <div class="card-top"><h3>SIM RS</h3><span class="year">2020</span></div>
         <div class="tagline">Hospital Registration — Android & iOS</div>
         <p>Online medical registration app for Padang Panjang Hospital, built solo from scratch
@@ -261,7 +420,7 @@
         <div class="tags"><span class="tag">React Native</span><span class="tag">Laravel</span><span class="tag">Axios</span></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0.07s">
         <div class="card-top"><h3>ABON — Absensi Online</h3><span class="year">2020</span></div>
         <div class="tagline">GPS Attendance — Android & iOS</div>
         <p>Online attendance app for West Sumatra government employees. Check-in is validated
@@ -269,7 +428,7 @@
         <div class="tags"><span class="tag">React Native</span><span class="tag">Geolocation</span><span class="tag">Axios</span></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0.14s">
         <div class="card-top"><h3>Sumbar Madani</h3><span class="year">2021</span></div>
         <div class="tagline">Provincial Super-App — Android & iOS</div>
         <p>Public services app for the West Sumatra provincial government (Diskominfo): news,
@@ -278,7 +437,7 @@
         <div class="tags"><span class="tag">React Native</span><span class="tag">Firebase</span></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0s">
         <div class="card-top"><h3>Warung Tepat</h3><span class="year">2021</span></div>
         <div class="tagline">Marketplace & PPOB — BTPN Syariah</div>
         <p>Marketplace and bill-payment (PPOB) app for warung owners: balance top-up, cash
@@ -286,7 +445,7 @@
         <div class="tags"><span class="tag">React Native</span><span class="tag">Redux</span><span class="tag">Firebase</span></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0.07s">
         <div class="card-top"><h3>Sitepat</h3><span class="year">2021</span></div>
         <div class="tagline">Marketplace & PPOB — Android & iOS</div>
         <p>Sharia financing and marketplace app with account balance, financing facility
@@ -294,7 +453,7 @@
         <div class="tags"><span class="tag">React Native</span><span class="tag">Redux</span><span class="tag">Firebase</span></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0.14s">
         <div class="card-top"><h3>Tepati</h3><span class="year">2021</span></div>
         <div class="tagline">Customer Acquisition — Field App</div>
         <p>Customer management app for Sitepat field agents: document verification, routine visits,
@@ -302,7 +461,7 @@
         <div class="tags"><span class="tag">React Native</span><span class="tag">Redux</span><span class="tag">SQLite</span></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0s">
         <div class="card-top"><h3>Web Sitepat</h3><span class="year">2021</span></div>
         <div class="tagline">Management Dashboard — Web</div>
         <p>Web management dashboard for BTPN Syariah's Sitepat: region-level disbursement analytics,
@@ -310,7 +469,7 @@
         <div class="tags"><span class="tag">React</span><span class="tag">Redux</span><span class="tag">JWT</span></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0.07s">
         <div class="card-top"><h3>BRI RECE</h3><span class="year">2021</span></div>
         <div class="tagline">Digital Wallet — Mobile Web View</div>
         <p>Digital wallet application for BRI, built as a mobile web view with React and TypeScript:
@@ -318,7 +477,7 @@
         <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0.14s">
         <div class="card-top"><h3>SIMPEN</h3><span class="year">2020–2021</span></div>
         <div class="tagline">Procurement System — PLN UPDK Pekanbaru</div>
         <p>Goods procurement management system for PLN UPDK Pekanbaru: contract monitoring,
@@ -326,7 +485,7 @@
         <div class="tags"><span class="tag">Laravel</span><span class="tag">MySQL</span></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal" style="--d: 0s">
         <div class="card-top"><h3>Engine Vue & Express</h3><span class="year">2020–2021</span></div>
         <div class="tagline">App Engine / Admin Generator</div>
         <p>An application engine used as the foundation for building admin apps — dynamic menus,
@@ -338,38 +497,115 @@
   </div>
 </section>
 
+<section id="cv">
+  <div class="container">
+    <div class="cv-head">
+      <div>
+        <h2 class="section-title reveal">Curriculum Vitae</h2>
+        <p class="section-sub reveal">My journey as a developer, from hospital systems to founding my own product.</p>
+      </div>
+      <a class="btn btn-primary btn-glow reveal" href="cv-odhi-ahmad.pdf" download>⬇ Download CV (PDF)</a>
+    </div>
+
+    <div class="timeline reveal">
+
+      <div class="tl-item reveal from-left" style="--d: 0.1s">
+        <span class="tl-dot"></span>
+        <span class="tl-date">2024 — PRESENT</span>
+        <h3>Founder & Full Stack Developer</h3>
+        <div class="place">Loka Kasir — Point of Sale Platform</div>
+        <p>Designing and building an entire POS ecosystem for Indonesian SMBs, solo:</p>
+        <ul>
+          <li>Go backend (Gin, PostgreSQL, Redis) with layered architecture and multi-outlet support</li>
+          <li>Flutter cashier app for Android/iOS, responsive for mobile & tablet</li>
+          <li>React admin dashboard and Next.js marketing site</li>
+          <li>QRIS payments, offline-first web POS, QR scan-to-order, and HPP/BOM smart pricing</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal from-left" style="--d: 0.15s">
+        <span class="tl-dot"></span>
+        <span class="tl-date">2021</span>
+        <h3>Mobile & Frontend Developer</h3>
+        <div class="place">BTPN Syariah Ecosystem — Warung Tepat, Sitepat, Tepati, Web Sitepat</div>
+        <p>Built four production apps in the sharia banking ecosystem: marketplace & PPOB apps,
+           a field-agent customer-acquisition app with offline SQLite sync, and a React analytics
+           dashboard — all with React Native/React, Redux, and Firebase.</p>
+      </div>
+
+      <div class="tl-item reveal from-left" style="--d: 0.2s">
+        <span class="tl-dot"></span>
+        <span class="tl-date">2021</span>
+        <h3>Frontend Developer</h3>
+        <div class="place">BRI — RECE Digital Wallet</div>
+        <p>Developed the registration and login experience for BRI's RECE e-wallet as a
+           mobile web view using React and TypeScript.</p>
+      </div>
+
+      <div class="tl-item reveal from-left" style="--d: 0.25s">
+        <span class="tl-dot"></span>
+        <span class="tl-date">2020 — 2021</span>
+        <h3>Full Stack Developer</h3>
+        <div class="place">Government & Enterprise Projects</div>
+        <ul>
+          <li><strong>Sumbar Madani</strong> — provincial super-app for Diskominfo West Sumatra (React Native)</li>
+          <li><strong>SIMPEN</strong> — procurement system for PLN UPDK Pekanbaru (Laravel)</li>
+          <li><strong>Engine Vue & Express</strong> — reusable admin app engine with dynamic roles & menus</li>
+          <li><strong>ABON</strong> — GPS-validated attendance app for West Sumatra government employees</li>
+        </ul>
+      </div>
+
+      <div class="tl-item reveal from-left" style="--d: 0.3s">
+        <span class="tl-dot"></span>
+        <span class="tl-date">2020</span>
+        <h3>Full Stack Developer</h3>
+        <div class="place">RSUD Padang Panjang — Hospital Information System</div>
+        <p>Built SIM RS, the hospital's online medical registration app, entirely solo in ~6 months —
+           React Native mobile app plus Laravel backend, published to the Google Play Store.</p>
+      </div>
+
+    </div>
+
+    <div class="cv-download reveal zoom">
+      <h3>📄 Want the full document?</h3>
+      <p>Grab the complete portfolio & CV as a PDF — screenshots of every project included.</p>
+      <a class="btn btn-primary btn-glow" href="cv-odhi-ahmad.pdf" download>Download CV — PDF (1.2 MB)</a>
+    </div>
+  </div>
+</section>
+
 <section id="skills">
   <div class="container">
-    <h2 class="section-title">Skills & Tools</h2>
-    <p class="section-sub">The stack I use day to day.</p>
+    <h2 class="section-title reveal">Skills & Tools</h2>
+    <p class="section-sub reveal">The stack I use day to day.</p>
     <div class="skills">
-      <span class="skill">Go (Gin)</span>
-      <span class="skill">Flutter & Dart</span>
-      <span class="skill">React / React Native</span>
-      <span class="skill">TypeScript</span>
-      <span class="skill">Next.js</span>
-      <span class="skill">Vue.js</span>
-      <span class="skill">Laravel / PHP</span>
-      <span class="skill">Node.js / Express</span>
-      <span class="skill">PostgreSQL</span>
-      <span class="skill">MySQL</span>
-      <span class="skill">Redis</span>
-      <span class="skill">Riverpod / Redux / Zustand</span>
-      <span class="skill">Firebase</span>
-      <span class="skill">REST API Design</span>
-      <span class="skill">JWT Auth</span>
-      <span class="skill">Git & CI/CD</span>
+      <span class="skill reveal" style="--d: 0s">Go (Gin)</span>
+      <span class="skill reveal" style="--d: 0.04s">Flutter & Dart</span>
+      <span class="skill reveal" style="--d: 0.08s">React / React Native</span>
+      <span class="skill reveal" style="--d: 0.12s">TypeScript</span>
+      <span class="skill reveal" style="--d: 0.16s">Next.js</span>
+      <span class="skill reveal" style="--d: 0.2s">Vue.js</span>
+      <span class="skill reveal" style="--d: 0.24s">Laravel / PHP</span>
+      <span class="skill reveal" style="--d: 0.28s">Node.js / Express</span>
+      <span class="skill reveal" style="--d: 0.32s">PostgreSQL</span>
+      <span class="skill reveal" style="--d: 0.36s">MySQL</span>
+      <span class="skill reveal" style="--d: 0.4s">Redis</span>
+      <span class="skill reveal" style="--d: 0.44s">Riverpod / Redux / Zustand</span>
+      <span class="skill reveal" style="--d: 0.48s">Firebase</span>
+      <span class="skill reveal" style="--d: 0.52s">REST API Design</span>
+      <span class="skill reveal" style="--d: 0.56s">JWT Auth</span>
+      <span class="skill reveal" style="--d: 0.6s">Git & CI/CD</span>
     </div>
   </div>
 </section>
 
 <section id="contact">
   <div class="container">
-    <div class="contact-card">
+    <div class="contact-card reveal zoom">
       <h2>Let's Build Something</h2>
       <p>Open for full-stack projects — mobile apps, web dashboards, and backend APIs.</p>
       <div class="hero-actions" style="justify-content: center;">
-        <a class="btn btn-primary" href="mailto:odhiahmad15@gmail.com">odhiahmad15@gmail.com</a>
+        <a class="btn btn-primary btn-glow" href="mailto:odhiahmad15@gmail.com">odhiahmad15@gmail.com</a>
         <a class="btn btn-ghost" href="https://github.com/odhiahmad" target="_blank" rel="noopener">github.com/odhiahmad ↗</a>
       </div>
     </div>
@@ -380,7 +616,70 @@
   <div class="container">© <span id="year"></span> Odhi Ahmad Hidayat · Built with plain HTML & CSS, hosted on GitHub Pages</div>
 </footer>
 
-<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Typing effect for hero roles
+  (function () {
+    var roles = ['Full Stack Developer', 'Mobile App Developer', 'Backend Engineer', 'POS Platform Builder'];
+    var el = document.getElementById('typed');
+    if (reducedMotion) { el.textContent = roles[0]; return; }
+    var roleIdx = 0, charIdx = 0, deleting = false;
+    function tick() {
+      var word = roles[roleIdx];
+      charIdx += deleting ? -1 : 1;
+      el.textContent = word.slice(0, charIdx);
+      var delay = deleting ? 40 : 85;
+      if (!deleting && charIdx === word.length) { delay = 1800; deleting = true; }
+      else if (deleting && charIdx === 0) { deleting = false; roleIdx = (roleIdx + 1) % roles.length; delay = 350; }
+      setTimeout(tick, delay);
+    }
+    tick();
+  })();
+
+  // Scroll reveal
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(function (el) { observer.observe(el); });
+
+  // Animated counters
+  var counterObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      counterObserver.unobserve(el);
+      var target = parseInt(el.dataset.count, 10);
+      if (reducedMotion) { el.textContent = target + '+'; return; }
+      var start = null, duration = 1400;
+      function step(ts) {
+        if (!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target) + '+';
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat .num').forEach(function (el) { counterObserver.observe(el); });
+
+  // Mouse-follow glow on project cards
+  document.querySelectorAll('.card').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+    });
+  });
+</script>
 
 </body>
 </html>
