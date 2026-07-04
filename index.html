@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,9 +57,10 @@
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
   .nav-logo { font-weight: 700; font-size: 1.05rem; color: var(--text); }
   .nav-logo span { color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 24px; }
   .nav-links { display: flex; gap: 24px; }
   .nav-links a { color: var(--muted); font-size: 0.92rem; position: relative; }
   .nav-links a::after {
@@ -69,6 +70,16 @@
   }
   .nav-links a:hover { color: var(--text); text-decoration: none; }
   .nav-links a:hover::after { width: 100%; }
+  .lang-toggle {
+    display: flex; border: 1px solid var(--border); border-radius: 999px; overflow: hidden;
+  }
+  .lang-toggle button {
+    background: none; border: none; color: var(--muted);
+    font: inherit; font-size: 0.8rem; font-weight: 700;
+    padding: 5px 13px; cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .lang-toggle button.active { background: var(--accent); color: #071018; }
 
   /* ============ Hero ============ */
   header { padding: 110px 0 80px; position: relative; }
@@ -199,6 +210,23 @@
   }
   .card:hover { transform: translateY(-6px); border-color: #31415f; box-shadow: 0 14px 40px rgba(0,0,0,0.4); }
   .card:hover::before { opacity: 1; }
+  .shots {
+    display: flex; gap: 10px;
+    margin: -24px -24px 18px;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.28);
+    border-bottom: 1px solid var(--border);
+    border-radius: 14px 14px 0 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .shots img {
+    height: 170px; border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: zoom-in;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+  .shots img:hover { transform: scale(1.05); border-color: var(--accent); }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
   .card h3 { font-size: 1.15rem; font-weight: 700; }
   .card .year { color: var(--muted); font-size: 0.82rem; white-space: nowrap; margin-left: 12px; }
@@ -210,6 +238,30 @@
     background: var(--accent-soft); color: var(--accent);
     font-size: 0.74rem; font-weight: 600;
     padding: 4px 10px; border-radius: 999px;
+  }
+
+  /* ============ Lightbox ============ */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(5, 8, 12, 0.92);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+    cursor: zoom-out;
+  }
+  .lightbox.open { opacity: 1; pointer-events: auto; }
+  .lightbox img {
+    max-width: 92vw; max-height: 88vh;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    transform: scale(0.92);
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lightbox.open img { transform: scale(1); }
+  .lightbox-hint {
+    position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+    color: var(--muted); font-size: 0.85rem;
   }
 
   /* ============ CV / Experience timeline ============ */
@@ -308,6 +360,7 @@
     header { padding: 70px 0 52px; }
     .featured { padding: 26px 20px; }
     .timeline { padding-left: 28px; }
+    .shots img { height: 140px; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -321,12 +374,18 @@
 <nav>
   <div class="container nav-inner">
     <div class="nav-logo">odhi<span>ahmad</span></div>
-    <div class="nav-links">
-      <a href="#featured">Featured</a>
-      <a href="#projects">Projects</a>
-      <a href="#cv">CV</a>
-      <a href="#skills">Skills</a>
-      <a href="#contact">Contact</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#featured" data-i18n="nav.featured">Unggulan</a>
+        <a href="#projects" data-i18n="nav.projects">Proyek</a>
+        <a href="#cv">CV</a>
+        <a href="#skills" data-i18n="nav.skills">Keahlian</a>
+        <a href="#contact" data-i18n="nav.contact">Kontak</a>
+      </div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="id">ID</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -338,60 +397,51 @@
   <div class="container">
     <span class="hero-kicker reveal visible">Android · iOS · Web</span>
     <h1>
-      Hi, I'm <span class="accent">Odhi Ahmad Hidayat</span>
+      <span data-i18n="hero.hi">Halo, saya</span> <span class="accent">Odhi Ahmad Hidayat</span>
       <span class="typed-line"><span id="typed"></span><span class="caret"></span></span>
     </h1>
-    <p class="hero-sub">
-      I build end-to-end products — from Go backends and React dashboards to Flutter
-      and React Native apps shipped to the Play Store and App Store. Based in Indonesia,
-      working across fintech, government, healthcare, and retail.
-    </p>
+    <p class="hero-sub" data-i18n="hero.sub"></p>
     <div class="hero-actions">
-      <a class="btn btn-primary btn-glow" href="#featured">View My Work</a>
-      <a class="btn btn-ghost" href="cv-odhi-ahmad.pdf" download>⬇ Download CV</a>
+      <a class="btn btn-primary btn-glow" href="#featured" data-i18n="hero.cta">Lihat Karya Saya</a>
+      <a class="btn btn-ghost" href="cv-odhi-ahmad.pdf" download data-i18n="hero.cv">⬇ Unduh CV</a>
       <a class="btn btn-ghost" href="https://github.com/odhiahmad" target="_blank" rel="noopener">GitHub ↗</a>
     </div>
 
     <div class="stats">
-      <div class="stat reveal" style="--d: 0s"><div class="num" data-count="11">0</div><div class="label">Apps & Systems Shipped</div></div>
-      <div class="stat reveal" style="--d: 0.1s"><div class="num" data-count="6">0</div><div class="label">Years of Experience</div></div>
-      <div class="stat reveal" style="--d: 0.2s"><div class="num" data-count="4">0</div><div class="label">Industries Served</div></div>
-      <div class="stat reveal" style="--d: 0.3s"><div class="num" data-count="8">0</div><div class="label">Tech Stacks Mastered</div></div>
+      <div class="stat reveal" style="--d: 0s"><div class="num" data-count="11">0</div><div class="label" data-i18n="stat.apps">Aplikasi & Sistem Dirilis</div></div>
+      <div class="stat reveal" style="--d: 0.1s"><div class="num" data-count="6">0</div><div class="label" data-i18n="stat.years">Tahun Pengalaman</div></div>
+      <div class="stat reveal" style="--d: 0.2s"><div class="num" data-count="4">0</div><div class="label" data-i18n="stat.industries">Industri Dilayani</div></div>
+      <div class="stat reveal" style="--d: 0.3s"><div class="num" data-count="8">0</div><div class="label" data-i18n="stat.stacks">Tech Stack Dikuasai</div></div>
     </div>
   </div>
 </header>
 
 <section id="featured">
   <div class="container">
-    <h2 class="section-title reveal">Featured Project</h2>
-    <p class="section-sub reveal">The product I'm building end-to-end: backend, web, and mobile.</p>
+    <h2 class="section-title reveal" data-i18n="feat.title">Proyek Unggulan</h2>
+    <p class="section-sub reveal" data-i18n="feat.sub"></p>
 
     <div class="featured reveal zoom">
-      <span class="featured-badge">Flagship · 2024 — Present</span>
+      <span class="featured-badge" data-i18n="feat.badge">Produk Utama · 2024 — Sekarang</span>
       <h3>Loka Kasir</h3>
-      <div class="role">Founder & Full Stack Developer</div>
-      <p>
-        A complete Point of Sale (POS) platform for small and medium businesses in Indonesia.
-        Loka Kasir covers the full retail workflow: cashier transactions, inventory, cost-of-goods
-        (HPP/BOM) smart pricing, QRIS payments, offline-first web POS, and QR scan-to-order
-        for restaurant tables — all managed from a single admin dashboard.
-      </p>
+      <div class="role" data-i18n="feat.role">Founder & Full Stack Developer</div>
+      <p data-i18n="feat.desc"></p>
       <div class="featured-grid">
         <div class="featured-item">
-          <strong>Backend API</strong>
-          <span>Go, Gin, PostgreSQL, Redis — layered architecture with JWT auth, rate limiting, and role-based access</span>
+          <strong data-i18n="feat.be.t">Backend API</strong>
+          <span data-i18n="feat.be.d"></span>
         </div>
         <div class="featured-item">
-          <strong>Mobile App (iOS/Android)</strong>
-          <span>Flutter with Riverpod state management, offline-capable, responsive mobile & tablet layouts</span>
+          <strong data-i18n="feat.mob.t">Aplikasi Mobile (iOS/Android)</strong>
+          <span data-i18n="feat.mob.d"></span>
         </div>
         <div class="featured-item">
-          <strong>Admin Dashboard</strong>
-          <span>React, TypeScript, Vite, Zustand — full business management: products, outlets, reports, employees</span>
+          <strong data-i18n="feat.web.t">Dashboard Admin</strong>
+          <span data-i18n="feat.web.d"></span>
         </div>
         <div class="featured-item">
-          <strong>Landing Page</strong>
-          <span>Next.js App Router, fully data-driven content</span>
+          <strong data-i18n="feat.land.t">Landing Page</strong>
+          <span data-i18n="feat.land.d"></span>
         </div>
       </div>
       <div class="tags">
@@ -406,90 +456,122 @@
 
 <section id="projects">
   <div class="container">
-    <h2 class="section-title reveal">Selected Projects</h2>
-    <p class="section-sub reveal">Apps I've built and shipped for hospitals, government agencies, banks, and startups.</p>
+    <h2 class="section-title reveal" data-i18n="proj.title">Proyek Pilihan</h2>
+    <p class="section-sub reveal" data-i18n="proj.sub"></p>
 
     <div class="grid">
 
       <div class="card reveal" style="--d: 0s">
+        <div class="shots">
+          <img src="assets/sim-rs-1.jpg" alt="SIM RS — Play Store listing" loading="lazy">
+          <img src="assets/sim-rs-2.jpg" alt="SIM RS — app detail" loading="lazy">
+        </div>
         <div class="card-top"><h3>SIM RS</h3><span class="year">2020</span></div>
-        <div class="tagline">Hospital Registration — Android & iOS</div>
-        <p>Online medical registration app for Padang Panjang Hospital, built solo from scratch
-           in ~6 months: React Native front end with a Laravel backend, published to the Play Store.</p>
+        <div class="tagline" data-i18n="p.simrs.tag"></div>
+        <p data-i18n="p.simrs.desc"></p>
         <div class="links"><a href="https://play.google.com/store/apps/details?id=com.rsudpadangpanjang" target="_blank" rel="noopener">Play Store ↗</a></div>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Laravel</span><span class="tag">Axios</span></div>
       </div>
 
       <div class="card reveal" style="--d: 0.07s">
+        <div class="shots">
+          <img src="assets/abon-1.jpg" alt="ABON — App Store listing" loading="lazy">
+          <img src="assets/abon-2.jpg" alt="ABON — attendance dashboard" loading="lazy">
+        </div>
         <div class="card-top"><h3>ABON — Absensi Online</h3><span class="year">2020</span></div>
-        <div class="tagline">GPS Attendance — Android & iOS</div>
-        <p>Online attendance app for West Sumatra government employees. Check-in is validated
-           against predetermined GPS coordinates, with daily reports and leave-permit workflows built in.</p>
+        <div class="tagline" data-i18n="p.abon.tag"></div>
+        <p data-i18n="p.abon.desc"></p>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Geolocation</span><span class="tag">Axios</span></div>
       </div>
 
       <div class="card reveal" style="--d: 0.14s">
+        <div class="shots">
+          <img src="assets/sumbar-madani-1.jpg" alt="Sumbar Madani — home screen" loading="lazy">
+          <img src="assets/sumbar-madani-2.jpg" alt="Sumbar Madani — App Store" loading="lazy">
+          <img src="assets/sumbar-madani-3.jpg" alt="Sumbar Madani — Play Store" loading="lazy">
+        </div>
         <div class="card-top"><h3>Sumbar Madani</h3><span class="year">2021</span></div>
-        <div class="tagline">Provincial Super-App — Android & iOS</div>
-        <p>Public services app for the West Sumatra provincial government (Diskominfo): news,
-           health & COVID statistics, JDIH legal documents, tourism, surveys, and incident reporting.</p>
+        <div class="tagline" data-i18n="p.madani.tag"></div>
+        <p data-i18n="p.madani.desc"></p>
         <div class="links"><a href="https://play.google.com/store/apps/details?id=com.kominfosumbar.sumbarmadani" target="_blank" rel="noopener">Play Store ↗</a></div>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Firebase</span></div>
       </div>
 
       <div class="card reveal" style="--d: 0s">
+        <div class="shots">
+          <img src="assets/warung-tepat-1.jpg" alt="Warung Tepat — home screen" loading="lazy">
+          <img src="assets/warung-tepat-2.jpg" alt="Warung Tepat — login screen" loading="lazy">
+        </div>
         <div class="card-top"><h3>Warung Tepat</h3><span class="year">2021</span></div>
-        <div class="tagline">Marketplace & PPOB — BTPN Syariah</div>
-        <p>Marketplace and bill-payment (PPOB) app for warung owners: balance top-up, cash
-           deposit/withdrawal, commission tracking, and product catalog.</p>
+        <div class="tagline" data-i18n="p.warung.tag"></div>
+        <p data-i18n="p.warung.desc"></p>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Redux</span><span class="tag">Firebase</span></div>
       </div>
 
       <div class="card reveal" style="--d: 0.07s">
+        <div class="shots">
+          <img src="assets/sitepat-1.jpg" alt="Sitepat — account dashboard" loading="lazy">
+          <img src="assets/sitepat-2.jpg" alt="Sitepat — login screen" loading="lazy">
+        </div>
         <div class="card-top"><h3>Sitepat</h3><span class="year">2021</span></div>
-        <div class="tagline">Marketplace & PPOB — Android & iOS</div>
-        <p>Sharia financing and marketplace app with account balance, financing facility
-           applications, and installment management.</p>
+        <div class="tagline" data-i18n="p.sitepat.tag"></div>
+        <p data-i18n="p.sitepat.desc"></p>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Redux</span><span class="tag">Firebase</span></div>
       </div>
 
       <div class="card reveal" style="--d: 0.14s">
+        <div class="shots">
+          <img src="assets/tepati-1.jpg" alt="Tepati — login screen" loading="lazy">
+          <img src="assets/tepati-2.jpg" alt="Tepati — acquisition pipeline" loading="lazy">
+        </div>
         <div class="card-top"><h3>Tepati</h3><span class="year">2021</span></div>
-        <div class="tagline">Customer Acquisition — Field App</div>
-        <p>Customer management app for Sitepat field agents: document verification, routine visits,
-           customer search, and an offline-capable acquisition pipeline with SQLite sync.</p>
+        <div class="tagline" data-i18n="p.tepati.tag"></div>
+        <p data-i18n="p.tepati.desc"></p>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Redux</span><span class="tag">SQLite</span></div>
       </div>
 
       <div class="card reveal" style="--d: 0s">
+        <div class="shots">
+          <img src="assets/web-sitepat-1.jpg" alt="Web Sitepat — analytics dashboard" loading="lazy">
+          <img src="assets/web-sitepat-2.jpg" alt="Web Sitepat — login" loading="lazy">
+          <img src="assets/web-sitepat-3.jpg" alt="Web Sitepat — charts" loading="lazy">
+        </div>
         <div class="card-top"><h3>Web Sitepat</h3><span class="year">2021</span></div>
-        <div class="tagline">Management Dashboard — Web</div>
-        <p>Web management dashboard for BTPN Syariah's Sitepat: region-level disbursement analytics,
-           eligibility tables, and charts. Modular React repo with JWT authentication.</p>
+        <div class="tagline" data-i18n="p.websitepat.tag"></div>
+        <p data-i18n="p.websitepat.desc"></p>
         <div class="tags"><span class="tag">React</span><span class="tag">Redux</span><span class="tag">JWT</span></div>
       </div>
 
       <div class="card reveal" style="--d: 0.07s">
+        <div class="shots">
+          <img src="assets/bri-rece-1.jpg" alt="BRI RECE — registration screen" loading="lazy">
+          <img src="assets/bri-rece-2.jpg" alt="BRI RECE — welcome screen" loading="lazy">
+        </div>
         <div class="card-top"><h3>BRI RECE</h3><span class="year">2021</span></div>
-        <div class="tagline">Digital Wallet — Mobile Web View</div>
-        <p>Digital wallet application for BRI, built as a mobile web view with React and TypeScript:
-           registration and login flows for the RECE e-wallet.</p>
+        <div class="tagline" data-i18n="p.rece.tag"></div>
+        <p data-i18n="p.rece.desc"></p>
         <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span></div>
       </div>
 
       <div class="card reveal" style="--d: 0.14s">
+        <div class="shots">
+          <img src="assets/simpen-1.jpg" alt="SIMPEN — login page" loading="lazy">
+          <img src="assets/simpen-2.jpg" alt="SIMPEN — procurement dashboard" loading="lazy">
+        </div>
         <div class="card-top"><h3>SIMPEN</h3><span class="year">2020–2021</span></div>
-        <div class="tagline">Procurement System — PLN UPDK Pekanbaru</div>
-        <p>Goods procurement management system for PLN UPDK Pekanbaru: contract monitoring,
-           budget tracking (EBB), and procurement dashboards.</p>
+        <div class="tagline" data-i18n="p.simpen.tag"></div>
+        <p data-i18n="p.simpen.desc"></p>
         <div class="tags"><span class="tag">Laravel</span><span class="tag">MySQL</span></div>
       </div>
 
       <div class="card reveal" style="--d: 0s">
+        <div class="shots">
+          <img src="assets/engine-1.jpg" alt="Engine V12 — landing page" loading="lazy">
+          <img src="assets/engine-2.jpg" alt="Engine V12 — user management" loading="lazy">
+        </div>
         <div class="card-top"><h3>Engine Vue & Express</h3><span class="year">2020–2021</span></div>
-        <div class="tagline">App Engine / Admin Generator</div>
-        <p>An application engine used as the foundation for building admin apps — dynamic menus,
-           roles, and user management out of the box.</p>
+        <div class="tagline" data-i18n="p.engine.tag"></div>
+        <p data-i18n="p.engine.desc"></p>
         <div class="tags"><span class="tag">Vue</span><span class="tag">Express</span><span class="tag">Node.js</span></div>
       </div>
 
@@ -502,82 +584,78 @@
     <div class="cv-head">
       <div>
         <h2 class="section-title reveal">Curriculum Vitae</h2>
-        <p class="section-sub reveal">My journey as a developer, from hospital systems to founding my own product.</p>
+        <p class="section-sub reveal" data-i18n="cv.sub"></p>
       </div>
-      <a class="btn btn-primary btn-glow reveal" href="cv-odhi-ahmad.pdf" download>⬇ Download CV (PDF)</a>
+      <a class="btn btn-primary btn-glow reveal" href="cv-odhi-ahmad.pdf" download data-i18n="cv.dl">⬇ Unduh CV (PDF)</a>
     </div>
 
     <div class="timeline reveal">
 
       <div class="tl-item reveal from-left" style="--d: 0.1s">
         <span class="tl-dot"></span>
-        <span class="tl-date">2024 — PRESENT</span>
+        <span class="tl-date" data-i18n="cv.1.date">2024 — SEKARANG</span>
         <h3>Founder & Full Stack Developer</h3>
-        <div class="place">Loka Kasir — Point of Sale Platform</div>
-        <p>Designing and building an entire POS ecosystem for Indonesian SMBs, solo:</p>
+        <div class="place" data-i18n="cv.1.place">Loka Kasir — Platform Point of Sale</div>
+        <p data-i18n="cv.1.desc"></p>
         <ul>
-          <li>Go backend (Gin, PostgreSQL, Redis) with layered architecture and multi-outlet support</li>
-          <li>Flutter cashier app for Android/iOS, responsive for mobile & tablet</li>
-          <li>React admin dashboard and Next.js marketing site</li>
-          <li>QRIS payments, offline-first web POS, QR scan-to-order, and HPP/BOM smart pricing</li>
+          <li data-i18n="cv.1.li1"></li>
+          <li data-i18n="cv.1.li2"></li>
+          <li data-i18n="cv.1.li3"></li>
+          <li data-i18n="cv.1.li4"></li>
         </ul>
       </div>
 
       <div class="tl-item reveal from-left" style="--d: 0.15s">
         <span class="tl-dot"></span>
         <span class="tl-date">2021</span>
-        <h3>Mobile & Frontend Developer</h3>
-        <div class="place">BTPN Syariah Ecosystem — Warung Tepat, Sitepat, Tepati, Web Sitepat</div>
-        <p>Built four production apps in the sharia banking ecosystem: marketplace & PPOB apps,
-           a field-agent customer-acquisition app with offline SQLite sync, and a React analytics
-           dashboard — all with React Native/React, Redux, and Firebase.</p>
+        <h3 data-i18n="cv.2.title">Mobile & Frontend Developer</h3>
+        <div class="place" data-i18n="cv.2.place">Ekosistem BTPN Syariah — Warung Tepat, Sitepat, Tepati, Web Sitepat</div>
+        <p data-i18n="cv.2.desc"></p>
       </div>
 
       <div class="tl-item reveal from-left" style="--d: 0.2s">
         <span class="tl-dot"></span>
         <span class="tl-date">2021</span>
-        <h3>Frontend Developer</h3>
+        <h3 data-i18n="cv.3.title">Frontend Developer</h3>
         <div class="place">BRI — RECE Digital Wallet</div>
-        <p>Developed the registration and login experience for BRI's RECE e-wallet as a
-           mobile web view using React and TypeScript.</p>
+        <p data-i18n="cv.3.desc"></p>
       </div>
 
       <div class="tl-item reveal from-left" style="--d: 0.25s">
         <span class="tl-dot"></span>
         <span class="tl-date">2020 — 2021</span>
-        <h3>Full Stack Developer</h3>
-        <div class="place">Government & Enterprise Projects</div>
+        <h3 data-i18n="cv.4.title">Full Stack Developer</h3>
+        <div class="place" data-i18n="cv.4.place">Proyek Pemerintahan & Enterprise</div>
         <ul>
-          <li><strong>Sumbar Madani</strong> — provincial super-app for Diskominfo West Sumatra (React Native)</li>
-          <li><strong>SIMPEN</strong> — procurement system for PLN UPDK Pekanbaru (Laravel)</li>
-          <li><strong>Engine Vue & Express</strong> — reusable admin app engine with dynamic roles & menus</li>
-          <li><strong>ABON</strong> — GPS-validated attendance app for West Sumatra government employees</li>
+          <li data-i18n="cv.4.li1"></li>
+          <li data-i18n="cv.4.li2"></li>
+          <li data-i18n="cv.4.li3"></li>
+          <li data-i18n="cv.4.li4"></li>
         </ul>
       </div>
 
       <div class="tl-item reveal from-left" style="--d: 0.3s">
         <span class="tl-dot"></span>
         <span class="tl-date">2020</span>
-        <h3>Full Stack Developer</h3>
-        <div class="place">RSUD Padang Panjang — Hospital Information System</div>
-        <p>Built SIM RS, the hospital's online medical registration app, entirely solo in ~6 months —
-           React Native mobile app plus Laravel backend, published to the Google Play Store.</p>
+        <h3 data-i18n="cv.5.title">Full Stack Developer</h3>
+        <div class="place" data-i18n="cv.5.place">RSUD Padang Panjang — Sistem Informasi Rumah Sakit</div>
+        <p data-i18n="cv.5.desc"></p>
       </div>
 
     </div>
 
     <div class="cv-download reveal zoom">
-      <h3>📄 Want the full document?</h3>
-      <p>Grab the complete portfolio & CV as a PDF — screenshots of every project included.</p>
-      <a class="btn btn-primary btn-glow" href="cv-odhi-ahmad.pdf" download>Download CV — PDF (1.2 MB)</a>
+      <h3 data-i18n="cv.doc.t">📄 Butuh dokumen lengkapnya?</h3>
+      <p data-i18n="cv.doc.d"></p>
+      <a class="btn btn-primary btn-glow" href="cv-odhi-ahmad.pdf" download data-i18n="cv.doc.btn">Unduh CV — PDF (1,2 MB)</a>
     </div>
   </div>
 </section>
 
 <section id="skills">
   <div class="container">
-    <h2 class="section-title reveal">Skills & Tools</h2>
-    <p class="section-sub reveal">The stack I use day to day.</p>
+    <h2 class="section-title reveal" data-i18n="skill.title">Keahlian & Tools</h2>
+    <p class="section-sub reveal" data-i18n="skill.sub"></p>
     <div class="skills">
       <span class="skill reveal" style="--d: 0s">Go (Gin)</span>
       <span class="skill reveal" style="--d: 0.04s">Flutter & Dart</span>
@@ -602,8 +680,8 @@
 <section id="contact">
   <div class="container">
     <div class="contact-card reveal zoom">
-      <h2>Let's Build Something</h2>
-      <p>Open for full-stack projects — mobile apps, web dashboards, and backend APIs.</p>
+      <h2 data-i18n="contact.title">Mari Bangun Sesuatu</h2>
+      <p data-i18n="contact.sub"></p>
       <div class="hero-actions" style="justify-content: center;">
         <a class="btn btn-primary btn-glow" href="mailto:odhiahmad15@gmail.com">odhiahmad15@gmail.com</a>
         <a class="btn btn-ghost" href="https://github.com/odhiahmad" target="_blank" rel="noopener">github.com/odhiahmad ↗</a>
@@ -613,33 +691,236 @@
 </section>
 
 <footer>
-  <div class="container">© <span id="year"></span> Odhi Ahmad Hidayat · Built with plain HTML & CSS, hosted on GitHub Pages</div>
+  <div class="container">© <span id="year"></span> Odhi Ahmad Hidayat · <span data-i18n="footer.txt">Dibuat dengan HTML & CSS murni, di-hosting di GitHub Pages</span></div>
 </footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <img src="" alt="Screenshot">
+  <span class="lightbox-hint" data-i18n="lb.hint">Klik di mana saja untuk menutup</span>
+</div>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Typing effect for hero roles
+  /* ================= i18n ================= */
+  var I18N = {
+    id: {
+      'nav.featured': 'Unggulan',
+      'nav.projects': 'Proyek',
+      'nav.skills': 'Keahlian',
+      'nav.contact': 'Kontak',
+      'hero.hi': 'Halo, saya',
+      'hero.sub': 'Saya membangun produk digital dari hulu ke hilir — backend Go, dashboard React, hingga aplikasi Flutter dan React Native yang sudah rilis di Play Store dan App Store. Berpengalaman menggarap proyek fintech, pemerintahan, kesehatan, dan retail di Indonesia.',
+      'hero.cta': 'Lihat Karya Saya',
+      'hero.cv': '⬇ Unduh CV',
+      'stat.apps': 'Aplikasi & Sistem Dirilis',
+      'stat.years': 'Tahun Pengalaman',
+      'stat.industries': 'Industri Dilayani',
+      'stat.stacks': 'Tech Stack Dikuasai',
+      'feat.title': 'Proyek Unggulan',
+      'feat.sub': 'Produk yang saya bangun sendiri dari nol — backend, web, dan mobile.',
+      'feat.badge': 'Produk Utama · 2024 — Sekarang',
+      'feat.role': 'Founder & Full Stack Developer',
+      'feat.desc': 'Platform Point of Sale (POS) lengkap untuk UMKM Indonesia. Loka Kasir menangani seluruh alur operasional toko: transaksi kasir, manajemen stok, perhitungan HPP/BOM dengan smart pricing, pembayaran QRIS, web POS offline-first, hingga QR scan-to-order untuk meja restoran — semuanya terpusat di satu dashboard admin.',
+      'feat.be.t': 'Backend API',
+      'feat.be.d': 'Go, Gin, PostgreSQL, Redis — arsitektur berlapis dengan autentikasi JWT, rate limiting, dan akses berbasis peran',
+      'feat.mob.t': 'Aplikasi Mobile (iOS/Android)',
+      'feat.mob.d': 'Flutter dengan state management Riverpod, mendukung mode offline, tampilan responsif untuk HP & tablet',
+      'feat.web.t': 'Dashboard Admin',
+      'feat.web.d': 'React, TypeScript, Vite, Zustand — kelola produk, outlet, laporan penjualan, dan karyawan dalam satu tempat',
+      'feat.land.t': 'Landing Page',
+      'feat.land.d': 'Next.js App Router, seluruh konten dikelola lewat data (data-driven)',
+      'proj.title': 'Proyek Pilihan',
+      'proj.sub': 'Aplikasi yang saya bangun dan rilis untuk rumah sakit, instansi pemerintah, bank, dan startup.',
+      'p.simrs.tag': 'Pendaftaran Rumah Sakit — Android & iOS',
+      'p.simrs.desc': 'Aplikasi pendaftaran berobat online RSUD Padang Panjang. Saya bangun sendirian dari nol dalam ±6 bulan — front end React Native, backend Laravel — dan berhasil rilis di Play Store.',
+      'p.abon.tag': 'Absensi GPS — Android & iOS',
+      'p.abon.desc': 'Aplikasi absensi online untuk ASN Sumatera Barat. Absen hanya sah di dalam radius koordinat GPS yang ditentukan, dilengkapi laporan harian dan pengajuan izin langsung dari aplikasi.',
+      'p.madani.tag': 'Super-App Provinsi — Android & iOS',
+      'p.madani.desc': 'Aplikasi layanan publik Pemprov Sumatera Barat (Diskominfo): berita, statistik kesehatan & COVID, dokumen hukum JDIH, pariwisata, survei, dan pelaporan insiden — semua dalam satu aplikasi.',
+      'p.warung.tag': 'Marketplace & PPOB — BTPN Syariah',
+      'p.warung.desc': 'Aplikasi marketplace dan pembayaran tagihan (PPOB) untuk pemilik warung: isi saldo, setor & tarik tunai, pantau komisi, dan katalog produk kebutuhan warung.',
+      'p.sitepat.tag': 'Marketplace & PPOB — Android & iOS',
+      'p.sitepat.desc': 'Aplikasi pembiayaan syariah dan marketplace: cek saldo rekening, ajukan fasilitas pembiayaan, dan kelola angsuran — semuanya dari genggaman.',
+      'p.tepati.tag': 'Akuisisi Nasabah — Aplikasi Lapangan',
+      'p.tepati.desc': 'Aplikasi manajemen nasabah untuk agen lapangan Sitepat: verifikasi dokumen, kunjungan rutin, pencarian nasabah, dan pipeline akuisisi yang tetap jalan tanpa internet berkat sinkronisasi SQLite.',
+      'p.websitepat.tag': 'Dashboard Manajemen — Web',
+      'p.websitepat.desc': 'Dashboard manajemen web untuk Sitepat BTPN Syariah: analitik pencairan per wilayah, tabel eligibilitas, dan grafik performa. Repo React modular dengan autentikasi JWT.',
+      'p.rece.tag': 'Dompet Digital — Mobile Web View',
+      'p.rece.desc': 'Aplikasi dompet digital milik BRI, dibangun sebagai mobile web view dengan React dan TypeScript: alur registrasi dan login e-wallet RECE.',
+      'p.simpen.tag': 'Sistem Pengadaan — PLN UPDK Pekanbaru',
+      'p.simpen.desc': 'Sistem manajemen pengadaan barang PLN UPDK Pekanbaru: monitoring kontrak, pemantauan anggaran (EBB), dan dashboard pengadaan.',
+      'p.engine.tag': 'App Engine / Generator Admin',
+      'p.engine.desc': 'Engine aplikasi yang menjadi fondasi pembuatan aplikasi admin: menu dinamis, manajemen peran, dan pengelolaan pengguna langsung tersedia tanpa coding ulang.',
+      'cv.sub': 'Perjalanan saya sebagai developer — dari sistem rumah sakit hingga membangun produk sendiri.',
+      'cv.dl': '⬇ Unduh CV (PDF)',
+      'cv.1.date': '2024 — SEKARANG',
+      'cv.1.place': 'Loka Kasir — Platform Point of Sale',
+      'cv.1.desc': 'Merancang dan membangun seluruh ekosistem POS untuk UMKM Indonesia, seorang diri:',
+      'cv.1.li1': 'Backend Go (Gin, PostgreSQL, Redis) dengan arsitektur berlapis dan dukungan multi-outlet',
+      'cv.1.li2': 'Aplikasi kasir Flutter untuk Android/iOS, responsif untuk HP & tablet',
+      'cv.1.li3': 'Dashboard admin React serta situs pemasaran Next.js',
+      'cv.1.li4': 'Pembayaran QRIS, web POS offline-first, QR scan-to-order, dan smart pricing HPP/BOM',
+      'cv.2.title': 'Mobile & Frontend Developer',
+      'cv.2.place': 'Ekosistem BTPN Syariah — Warung Tepat, Sitepat, Tepati, Web Sitepat',
+      'cv.2.desc': 'Membangun empat aplikasi production di ekosistem perbankan syariah: aplikasi marketplace & PPOB, aplikasi akuisisi nasabah untuk agen lapangan dengan sinkronisasi offline SQLite, dan dashboard analitik React — semuanya dengan React Native/React, Redux, dan Firebase.',
+      'cv.3.title': 'Frontend Developer',
+      'cv.3.desc': 'Mengembangkan alur registrasi dan login e-wallet RECE milik BRI sebagai mobile web view menggunakan React dan TypeScript.',
+      'cv.4.title': 'Full Stack Developer',
+      'cv.4.place': 'Proyek Pemerintahan & Enterprise',
+      'cv.4.li1': '<strong>Sumbar Madani</strong> — super-app layanan publik Diskominfo Sumbar (React Native)',
+      'cv.4.li2': '<strong>SIMPEN</strong> — sistem pengadaan PLN UPDK Pekanbaru (Laravel)',
+      'cv.4.li3': '<strong>Engine Vue & Express</strong> — engine aplikasi admin reusable dengan peran & menu dinamis',
+      'cv.4.li4': '<strong>ABON</strong> — aplikasi absensi ASN Sumbar dengan validasi GPS',
+      'cv.5.title': 'Full Stack Developer',
+      'cv.5.place': 'RSUD Padang Panjang — Sistem Informasi Rumah Sakit',
+      'cv.5.desc': 'Membangun SIM RS, aplikasi pendaftaran berobat online rumah sakit, sepenuhnya sendirian dalam ±6 bulan — aplikasi mobile React Native plus backend Laravel, rilis di Google Play Store.',
+      'cv.doc.t': '📄 Butuh dokumen lengkapnya?',
+      'cv.doc.d': 'Unduh portfolio & CV lengkap dalam format PDF — sudah termasuk screenshot setiap proyek.',
+      'cv.doc.btn': 'Unduh CV — PDF (1,2 MB)',
+      'skill.title': 'Keahlian & Tools',
+      'skill.sub': 'Teknologi yang saya pakai sehari-hari.',
+      'contact.title': 'Mari Bangun Sesuatu',
+      'contact.sub': 'Terbuka untuk proyek full-stack — aplikasi mobile, dashboard web, dan backend API.',
+      'footer.txt': 'Dibuat dengan HTML & CSS murni, di-hosting di GitHub Pages',
+      'lb.hint': 'Klik di mana saja untuk menutup',
+      '_roles': ['Full Stack Developer', 'Pengembang Aplikasi Mobile', 'Backend Engineer', 'Pembangun Platform POS']
+    },
+    en: {
+      'nav.featured': 'Featured',
+      'nav.projects': 'Projects',
+      'nav.skills': 'Skills',
+      'nav.contact': 'Contact',
+      'hero.hi': "Hi, I'm",
+      'hero.sub': 'I build digital products end-to-end — Go backends, React dashboards, and Flutter & React Native apps shipped to the Play Store and App Store. Experienced across fintech, government, healthcare, and retail in Indonesia.',
+      'hero.cta': 'View My Work',
+      'hero.cv': '⬇ Download CV',
+      'stat.apps': 'Apps & Systems Shipped',
+      'stat.years': 'Years of Experience',
+      'stat.industries': 'Industries Served',
+      'stat.stacks': 'Tech Stacks Mastered',
+      'feat.title': 'Featured Project',
+      'feat.sub': 'The product I built from scratch, solo — backend, web, and mobile.',
+      'feat.badge': 'Flagship · 2024 — Present',
+      'feat.role': 'Founder & Full Stack Developer',
+      'feat.desc': 'A complete Point of Sale (POS) platform for Indonesian SMBs. Loka Kasir handles the entire store workflow: cashier transactions, inventory, cost-of-goods (HPP/BOM) smart pricing, QRIS payments, an offline-first web POS, and QR scan-to-order for restaurant tables — all managed from a single admin dashboard.',
+      'feat.be.t': 'Backend API',
+      'feat.be.d': 'Go, Gin, PostgreSQL, Redis — layered architecture with JWT auth, rate limiting, and role-based access',
+      'feat.mob.t': 'Mobile App (iOS/Android)',
+      'feat.mob.d': 'Flutter with Riverpod state management, offline-capable, responsive layouts for phone & tablet',
+      'feat.web.t': 'Admin Dashboard',
+      'feat.web.d': 'React, TypeScript, Vite, Zustand — manage products, outlets, sales reports, and employees in one place',
+      'feat.land.t': 'Landing Page',
+      'feat.land.d': 'Next.js App Router with fully data-driven content',
+      'proj.title': 'Selected Projects',
+      'proj.sub': "Apps I've built and shipped for hospitals, government agencies, banks, and startups.",
+      'p.simrs.tag': 'Hospital Registration — Android & iOS',
+      'p.simrs.desc': 'Online medical registration app for Padang Panjang Regional Hospital. Built solo from scratch in ~6 months — React Native front end, Laravel backend — and shipped to the Play Store.',
+      'p.abon.tag': 'GPS Attendance — Android & iOS',
+      'p.abon.desc': 'Online attendance app for West Sumatra civil servants. Check-ins are only valid within predefined GPS coordinates, with daily reports and leave requests built right into the app.',
+      'p.madani.tag': 'Provincial Super-App — Android & iOS',
+      'p.madani.desc': 'Public services app for the West Sumatra provincial government (Diskominfo): news, health & COVID statistics, JDIH legal documents, tourism, surveys, and incident reporting — all in one app.',
+      'p.warung.tag': 'Marketplace & PPOB — BTPN Syariah',
+      'p.warung.desc': 'Marketplace and bill-payment (PPOB) app for warung owners: balance top-up, cash deposit & withdrawal, commission tracking, and a product catalog for daily stock.',
+      'p.sitepat.tag': 'Marketplace & PPOB — Android & iOS',
+      'p.sitepat.desc': 'Sharia financing and marketplace app: check account balance, apply for financing facilities, and manage installments — all from your phone.',
+      'p.tepati.tag': 'Customer Acquisition — Field App',
+      'p.tepati.desc': 'Customer management app for Sitepat field agents: document verification, routine visits, customer search, and an acquisition pipeline that keeps working offline thanks to SQLite sync.',
+      'p.websitepat.tag': 'Management Dashboard — Web',
+      'p.websitepat.desc': "Web management dashboard for BTPN Syariah's Sitepat: region-level disbursement analytics, eligibility tables, and performance charts. Modular React repo with JWT authentication.",
+      'p.rece.tag': 'Digital Wallet — Mobile Web View',
+      'p.rece.desc': "BRI's digital wallet application, built as a mobile web view with React and TypeScript: the registration and login flows for the RECE e-wallet.",
+      'p.simpen.tag': 'Procurement System — PLN UPDK Pekanbaru',
+      'p.simpen.desc': 'Goods procurement management system for PLN UPDK Pekanbaru: contract monitoring, budget tracking (EBB), and procurement dashboards.',
+      'p.engine.tag': 'App Engine / Admin Generator',
+      'p.engine.desc': 'An application engine that serves as the foundation for admin apps: dynamic menus, role management, and user administration available out of the box — no rewriting needed.',
+      'cv.sub': 'My journey as a developer — from hospital systems to building my own product.',
+      'cv.dl': '⬇ Download CV (PDF)',
+      'cv.1.date': '2024 — PRESENT',
+      'cv.1.place': 'Loka Kasir — Point of Sale Platform',
+      'cv.1.desc': 'Designing and building an entire POS ecosystem for Indonesian SMBs, solo:',
+      'cv.1.li1': 'Go backend (Gin, PostgreSQL, Redis) with layered architecture and multi-outlet support',
+      'cv.1.li2': 'Flutter cashier app for Android/iOS, responsive for phone & tablet',
+      'cv.1.li3': 'React admin dashboard and Next.js marketing site',
+      'cv.1.li4': 'QRIS payments, offline-first web POS, QR scan-to-order, and HPP/BOM smart pricing',
+      'cv.2.title': 'Mobile & Frontend Developer',
+      'cv.2.place': 'BTPN Syariah Ecosystem — Warung Tepat, Sitepat, Tepati, Web Sitepat',
+      'cv.2.desc': 'Built four production apps in the sharia banking ecosystem: marketplace & PPOB apps, a field-agent customer-acquisition app with offline SQLite sync, and a React analytics dashboard — all with React Native/React, Redux, and Firebase.',
+      'cv.3.title': 'Frontend Developer',
+      'cv.3.desc': "Developed the registration and login experience for BRI's RECE e-wallet as a mobile web view using React and TypeScript.",
+      'cv.4.title': 'Full Stack Developer',
+      'cv.4.place': 'Government & Enterprise Projects',
+      'cv.4.li1': '<strong>Sumbar Madani</strong> — public services super-app for Diskominfo West Sumatra (React Native)',
+      'cv.4.li2': '<strong>SIMPEN</strong> — procurement system for PLN UPDK Pekanbaru (Laravel)',
+      'cv.4.li3': '<strong>Engine Vue & Express</strong> — reusable admin app engine with dynamic roles & menus',
+      'cv.4.li4': '<strong>ABON</strong> — GPS-validated attendance app for West Sumatra civil servants',
+      'cv.5.title': 'Full Stack Developer',
+      'cv.5.place': 'Padang Panjang Regional Hospital — Hospital Information System',
+      'cv.5.desc': "Built SIM RS, the hospital's online medical registration app, entirely solo in ~6 months — a React Native mobile app plus Laravel backend, published to the Google Play Store.",
+      'cv.doc.t': '📄 Want the full document?',
+      'cv.doc.d': 'Download the complete portfolio & CV as a PDF — screenshots of every project included.',
+      'cv.doc.btn': 'Download CV — PDF (1.2 MB)',
+      'skill.title': 'Skills & Tools',
+      'skill.sub': 'The stack I use day to day.',
+      'contact.title': "Let's Build Something",
+      'contact.sub': 'Open for full-stack projects — mobile apps, web dashboards, and backend APIs.',
+      'footer.txt': 'Built with plain HTML & CSS, hosted on GitHub Pages',
+      'lb.hint': 'Click anywhere to close',
+      '_roles': ['Full Stack Developer', 'Mobile App Developer', 'Backend Engineer', 'POS Platform Builder']
+    }
+  };
+
+  var typedState = { roles: I18N.id._roles, roleIdx: 0, charIdx: 0, deleting: false, timer: null };
+
+  function setLang(lang) {
+    var dict = I18N[lang] || I18N.id;
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var val = dict[el.dataset.i18n];
+      if (val !== undefined) el.innerHTML = val;
+    });
+    document.querySelectorAll('.lang-toggle button').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+    typedState.roles = dict._roles;
+    typedState.roleIdx = 0; typedState.charIdx = 0; typedState.deleting = false;
+    if (reducedMotion) document.getElementById('typed').textContent = dict._roles[0];
+  }
+
+  document.querySelectorAll('.lang-toggle button').forEach(function (b) {
+    b.addEventListener('click', function () { setLang(b.dataset.lang); });
+  });
+
+  var savedLang;
+  try { savedLang = localStorage.getItem('lang'); } catch (e) {}
+  var initialLang = savedLang || ((navigator.language || 'id').toLowerCase().indexOf('id') === 0 ? 'id' : 'en');
+  setLang(initialLang);
+
+  /* ================= Typing effect ================= */
   (function () {
-    var roles = ['Full Stack Developer', 'Mobile App Developer', 'Backend Engineer', 'POS Platform Builder'];
     var el = document.getElementById('typed');
-    if (reducedMotion) { el.textContent = roles[0]; return; }
-    var roleIdx = 0, charIdx = 0, deleting = false;
+    if (reducedMotion) return;
     function tick() {
-      var word = roles[roleIdx];
-      charIdx += deleting ? -1 : 1;
-      el.textContent = word.slice(0, charIdx);
-      var delay = deleting ? 40 : 85;
-      if (!deleting && charIdx === word.length) { delay = 1800; deleting = true; }
-      else if (deleting && charIdx === 0) { deleting = false; roleIdx = (roleIdx + 1) % roles.length; delay = 350; }
-      setTimeout(tick, delay);
+      var word = typedState.roles[typedState.roleIdx];
+      typedState.charIdx += typedState.deleting ? -1 : 1;
+      if (typedState.charIdx < 0) typedState.charIdx = 0;
+      el.textContent = word.slice(0, typedState.charIdx);
+      var delay = typedState.deleting ? 40 : 85;
+      if (!typedState.deleting && typedState.charIdx >= word.length) { delay = 1800; typedState.deleting = true; }
+      else if (typedState.deleting && typedState.charIdx === 0) {
+        typedState.deleting = false;
+        typedState.roleIdx = (typedState.roleIdx + 1) % typedState.roles.length;
+        delay = 350;
+      }
+      typedState.timer = setTimeout(tick, delay);
     }
     tick();
   })();
 
-  // Scroll reveal
+  /* ================= Scroll reveal ================= */
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
@@ -650,7 +931,7 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(function (el) { observer.observe(el); });
 
-  // Animated counters
+  /* ================= Animated counters ================= */
   var counterObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
@@ -671,13 +952,35 @@
   }, { threshold: 0.5 });
   document.querySelectorAll('.stat .num').forEach(function (el) { counterObserver.observe(el); });
 
-  // Mouse-follow glow on project cards
+  /* ================= Mouse-follow glow on cards ================= */
   document.querySelectorAll('.card').forEach(function (card) {
     card.addEventListener('mousemove', function (e) {
       var rect = card.getBoundingClientRect();
       card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
       card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
     });
+  });
+
+  /* ================= Lightbox ================= */
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = lightbox.querySelector('img');
+  document.querySelectorAll('.shots img').forEach(function (img) {
+    img.addEventListener('click', function () {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  lightbox.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLightbox();
   });
 </script>
 
