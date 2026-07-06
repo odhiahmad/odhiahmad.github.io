@@ -8,7 +8,10 @@
 <meta property="og:title" content="Odhi Ahmad Hidayat — Full Stack Developer">
 <meta property="og:description" content="Full Stack Developer building Android, iOS, and Web applications.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230b0f14%22/><text x=%2250%22 y=%2266%22 font-size=%2244%22 font-family=%22monospace%22 font-weight=%22700%22 fill=%22%234f9cff%22 text-anchor=%22middle%22>%3C/%3E</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0b0f14;
@@ -23,17 +26,29 @@
     --accent-2: #34d399;
     --accent-2-soft: rgba(52, 211, 153, 0.12);
     --accent-3: #a78bfa;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-display: "Plus Jakarta Sans", var(--font-body);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
+  h1, h2, h3, .nav-logo, .btn, .stat .num, .tl-date {
+    font-family: var(--font-display);
+  }
+  .icon {
+    width: 1em; height: 1em; display: inline-block;
+    vertical-align: -0.15em; flex-shrink: 0;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .icon-solid { fill: currentColor; stroke: none; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
   .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
@@ -147,6 +162,9 @@
     border: 1px solid var(--border); border-radius: 14px;
     background: var(--card); padding: 22px 18px; text-align: center;
   }
+  .stat .icon {
+    width: 20px; height: 20px; color: var(--accent); margin-bottom: 8px;
+  }
   .stat .num {
     font-size: 2rem; font-weight: 800; color: var(--accent);
     font-variant-numeric: tabular-nums;
@@ -233,6 +251,8 @@
   .card .tagline { color: var(--accent-2); font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
   .card p { color: var(--muted); font-size: 0.92rem; flex: 1; }
   .card .links { margin-top: 14px; font-size: 0.88rem; }
+  .card .links a { display: inline-flex; align-items: center; gap: 5px; }
+  .card .links .icon { width: 0.85em; height: 0.85em; }
   .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
   .tag {
     background: var(--accent-soft); color: var(--accent);
@@ -371,9 +391,26 @@
 </head>
 <body>
 
+<svg style="position:absolute; width:0; height:0; overflow:hidden" aria-hidden="true">
+  <defs>
+    <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4.2c0-1 .34-1.6.73-1.94-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a10.9 10.9 0 0 1 5.79 0C22.98 3.72 23.95 4.03 23.95 4.03c.62 1.6.23 2.76.11 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.4-5.25 5.69.42.36.79 1.07.79 2.17V22"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 7 12 13 22 7"/></symbol>
+    <symbol id="i-message-circle" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-4-1L3 20l1-5.4A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 11.5 3h.5a8.5 8.5 0 0 1 9 8.5z"/></symbol>
+    <symbol id="i-graduation-cap" viewBox="0 0 24 24"><path d="M2 9.5 12 5l10 4.5-10 4.5L2 9.5Z"/><path d="M6 11.8V17c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-5.2"/><path d="M22 9.5v6"/></symbol>
+    <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15c3-1 8.5-6 8-13-7-.5-12 5-13 8 1.5.5 3.5 3.5 5 5z"/><circle cx="14.5" cy="9.5" r="1.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="1"/><line x1="9" y1="6" x2="9" y2="6"/><line x1="15" y1="6" x2="15" y2="6"/><line x1="9" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="9" y2="14"/><line x1="15" y1="14" x2="15" y2="14"/><path d="M9 22v-4h6v4"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  </defs>
+</svg>
+
 <nav>
   <div class="container nav-inner">
-    <div class="nav-logo">odhi<span>ahmad</span></div>
+    <div class="nav-logo"><svg class="icon" style="color: var(--accent)"><use href="#i-code"></use></svg> odhi<span>ahmad</span></div>
     <div class="nav-right">
       <div class="nav-links">
         <a href="#featured" data-i18n="nav.featured">Unggulan</a>
@@ -403,15 +440,15 @@
     <p class="hero-sub" data-i18n="hero.sub"></p>
     <div class="hero-actions">
       <a class="btn btn-primary btn-glow" href="#featured" data-i18n="hero.cta">Lihat Karya Saya</a>
-      <a class="btn btn-ghost" href="cv-odhi-ahmad.pdf" download data-i18n="hero.cv">⬇ Unduh CV</a>
-      <a class="btn btn-ghost" href="https://github.com/odhiahmad" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn-ghost" href="cv-odhi-ahmad.pdf" download><svg class="icon"><use href="#i-download"></use></svg> <span data-i18n="hero.cv">Unduh CV</span></a>
+      <a class="btn btn-ghost" href="https://github.com/odhiahmad" target="_blank" rel="noopener"><svg class="icon icon-solid"><use href="#i-github"></use></svg> GitHub</a>
     </div>
 
     <div class="stats">
-      <div class="stat reveal" style="--d: 0s"><div class="num" data-count="12">0</div><div class="label" data-i18n="stat.apps">Aplikasi & Sistem Dirilis</div></div>
-      <div class="stat reveal" style="--d: 0.1s"><div class="num" data-count="7">0</div><div class="label" data-i18n="stat.years">Tahun Pengalaman</div></div>
-      <div class="stat reveal" style="--d: 0.2s"><div class="num" data-count="4">0</div><div class="label" data-i18n="stat.industries">Industri Dilayani</div></div>
-      <div class="stat reveal" style="--d: 0.3s"><div class="num" data-count="8">0</div><div class="label" data-i18n="stat.stacks">Tech Stack Dikuasai</div></div>
+      <div class="stat reveal" style="--d: 0s"><svg class="icon"><use href="#i-rocket"></use></svg><div class="num" data-count="12">0</div><div class="label" data-i18n="stat.apps">Aplikasi & Sistem Dirilis</div></div>
+      <div class="stat reveal" style="--d: 0.1s"><svg class="icon"><use href="#i-clock"></use></svg><div class="num" data-count="7">0</div><div class="label" data-i18n="stat.years">Tahun Pengalaman</div></div>
+      <div class="stat reveal" style="--d: 0.2s"><svg class="icon"><use href="#i-building"></use></svg><div class="num" data-count="4">0</div><div class="label" data-i18n="stat.industries">Industri Dilayani</div></div>
+      <div class="stat reveal" style="--d: 0.3s"><svg class="icon"><use href="#i-layers"></use></svg><div class="num" data-count="8">0</div><div class="label" data-i18n="stat.stacks">Tech Stack Dikuasai</div></div>
     </div>
   </div>
 </header>
@@ -451,7 +488,7 @@
         <span class="tag">QRIS</span><span class="tag">Offline-first</span>
       </div>
       <div class="hero-actions" style="margin-top: 24px;">
-        <a class="btn btn-primary btn-glow" href="https://www.lokakasir.id/" target="_blank" rel="noopener" data-i18n="feat.visit">Kunjungi lokakasir.id ↗</a>
+        <a class="btn btn-primary btn-glow" href="https://www.lokakasir.id/" target="_blank" rel="noopener"><span data-i18n="feat.visit">Kunjungi lokakasir.id</span> <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a>
       </div>
     </div>
   </div>
@@ -473,7 +510,7 @@
         <div class="card-top"><h3>NexaCloud</h3><span class="year" data-i18n="y.nexa">2026 — Sekarang</span></div>
         <div class="tagline" data-i18n="p.nexa.tag"></div>
         <p data-i18n="p.nexa.desc"></p>
-        <div class="links"><a href="https://odhiahmad.github.io/nexa-cloud/" target="_blank" rel="noopener">Live Demo ↗</a></div>
+        <div class="links"><a href="https://odhiahmad.github.io/nexa-cloud/" target="_blank" rel="noopener"><span>Live Demo</span> <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a></div>
         <div class="tags"><span class="tag">Figma</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
       </div>
 
@@ -485,7 +522,7 @@
         <div class="card-top"><h3>SIM RS</h3><span class="year">2020</span></div>
         <div class="tagline" data-i18n="p.simrs.tag"></div>
         <p data-i18n="p.simrs.desc"></p>
-        <div class="links"><a href="https://play.google.com/store/apps/details?id=com.rsudpadangpanjang" target="_blank" rel="noopener">Play Store ↗</a></div>
+        <div class="links"><a href="https://play.google.com/store/apps/details?id=com.rsudpadangpanjang" target="_blank" rel="noopener"><span>Play Store</span> <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a></div>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Laravel</span><span class="tag">Axios</span></div>
       </div>
 
@@ -509,7 +546,7 @@
         <div class="card-top"><h3>Sumbar Madani</h3><span class="year">2021</span></div>
         <div class="tagline" data-i18n="p.madani.tag"></div>
         <p data-i18n="p.madani.desc"></p>
-        <div class="links"><a href="https://play.google.com/store/apps/details?id=com.kominfosumbar.sumbarmadani" target="_blank" rel="noopener">Play Store ↗</a></div>
+        <div class="links"><a href="https://play.google.com/store/apps/details?id=com.kominfosumbar.sumbarmadani" target="_blank" rel="noopener"><span>Play Store</span> <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a></div>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Firebase</span></div>
       </div>
 
@@ -521,7 +558,7 @@
         <div class="card-top"><h3>Warung Tepat</h3><span class="year" data-i18n="y.now">2021 — Sekarang</span></div>
         <div class="tagline" data-i18n="p.warung.tag"></div>
         <p data-i18n="p.warung.desc"></p>
-        <div class="links"><a href="https://play.google.com/store/apps/details?id=com.btpns.lmd" target="_blank" rel="noopener">Play Store ↗</a></div>
+        <div class="links"><a href="https://play.google.com/store/apps/details?id=com.btpns.lmd" target="_blank" rel="noopener"><span>Play Store</span> <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a></div>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Redux</span><span class="tag">Firebase</span></div>
       </div>
 
@@ -533,7 +570,7 @@
         <div class="card-top"><h3>Sitepat</h3><span class="year" data-i18n="y.now">2021 — Sekarang</span></div>
         <div class="tagline" data-i18n="p.sitepat.tag"></div>
         <p data-i18n="p.sitepat.desc"></p>
-        <div class="links"><a href="https://play.google.com/store/apps/details?id=com.btpns.individualfinancing" target="_blank" rel="noopener">Play Store ↗</a></div>
+        <div class="links"><a href="https://play.google.com/store/apps/details?id=com.btpns.individualfinancing" target="_blank" rel="noopener"><span>Play Store</span> <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a></div>
         <div class="tags"><span class="tag">React Native</span><span class="tag">Redux</span><span class="tag">Firebase</span></div>
       </div>
 
@@ -604,7 +641,7 @@
         <h2 class="section-title reveal">Curriculum Vitae</h2>
         <p class="section-sub reveal" data-i18n="cv.sub"></p>
       </div>
-      <a class="btn btn-primary btn-glow reveal" href="cv-odhi-ahmad.pdf" download data-i18n="cv.dl">⬇ Unduh CV (PDF)</a>
+      <a class="btn btn-primary btn-glow reveal" href="cv-odhi-ahmad.pdf" download><svg class="icon"><use href="#i-download"></use></svg> <span data-i18n="cv.dl">Unduh CV (PDF)</span></a>
     </div>
 
     <div class="timeline reveal">
@@ -613,7 +650,7 @@
         <span class="tl-dot"></span>
         <span class="tl-date" data-i18n="cv.1.date">2024 — SEKARANG</span>
         <h3>Founder & Full Stack Developer</h3>
-        <div class="place" data-i18n="cv.1.place">Loka Kasir — Platform Point of Sale · <a href="https://www.lokakasir.id/" target="_blank" rel="noopener">lokakasir.id ↗</a></div>
+        <div class="place" data-i18n="cv.1.place">Loka Kasir — Platform Point of Sale · <a href="https://www.lokakasir.id/" target="_blank" rel="noopener">lokakasir.id <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a></div>
         <p data-i18n="cv.1.desc"></p>
         <ul>
           <li data-i18n="cv.1.li1"></li>
@@ -685,7 +722,7 @@
       <div class="tl-item reveal from-left" style="--d: 0.45s">
         <span class="tl-dot"></span>
         <span class="tl-date">2014 — 2019</span>
-        <h3 data-i18n="cv.edu.title">🎓 S1 Teknik Informatika</h3>
+        <h3><svg class="icon"><use href="#i-graduation-cap"></use></svg> <span data-i18n="cv.edu.title">S1 Teknik Informatika</span></h3>
         <div class="place" data-i18n="cv.edu.place">UIN Sultan Syarif Kasim Riau — Fakultas Sains dan Teknologi</div>
         <p data-i18n="cv.edu.desc"></p>
       </div>
@@ -693,9 +730,9 @@
     </div>
 
     <div class="cv-download reveal zoom">
-      <h3 data-i18n="cv.doc.t">📄 Butuh dokumen lengkapnya?</h3>
+      <h3><svg class="icon"><use href="#i-file-text"></use></svg> <span data-i18n="cv.doc.t">Butuh dokumen lengkapnya?</span></h3>
       <p data-i18n="cv.doc.d"></p>
-      <a class="btn btn-primary btn-glow" href="cv-odhi-ahmad.pdf" download data-i18n="cv.doc.btn">Unduh CV — PDF (1,2 MB)</a>
+      <a class="btn btn-primary btn-glow" href="cv-odhi-ahmad.pdf" download><svg class="icon"><use href="#i-download"></use></svg> <span data-i18n="cv.doc.btn">Unduh CV — PDF (1,2 MB)</span></a>
     </div>
   </div>
 </section>
@@ -731,9 +768,9 @@
       <h2 data-i18n="contact.title">Mari Bangun Sesuatu</h2>
       <p data-i18n="contact.sub"></p>
       <div class="hero-actions" style="justify-content: center;">
-        <a class="btn btn-primary btn-glow" href="mailto:odhiahmad15@gmail.com">odhiahmad15@gmail.com</a>
-        <a class="btn btn-primary btn-glow" href="https://wa.me/6285272993360" target="_blank" rel="noopener">WhatsApp 0852-7299-3360</a>
-        <a class="btn btn-ghost" href="https://github.com/odhiahmad" target="_blank" rel="noopener">github.com/odhiahmad ↗</a>
+        <a class="btn btn-primary btn-glow" href="mailto:odhiahmad15@gmail.com"><svg class="icon"><use href="#i-mail"></use></svg> odhiahmad15@gmail.com</a>
+        <a class="btn btn-primary btn-glow" href="https://wa.me/6285272993360" target="_blank" rel="noopener"><svg class="icon"><use href="#i-message-circle"></use></svg> WhatsApp 0852-7299-3360</a>
+        <a class="btn btn-ghost" href="https://github.com/odhiahmad" target="_blank" rel="noopener"><svg class="icon icon-solid"><use href="#i-github"></use></svg> github.com/odhiahmad <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a>
       </div>
     </div>
   </div>
@@ -763,7 +800,7 @@
       'hero.hi': 'Halo, saya',
       'hero.sub': 'Saya membangun produk digital dari hulu ke hilir — backend Go, dashboard React, hingga aplikasi Flutter dan React Native yang sudah rilis di Play Store dan App Store. Berpengalaman menggarap proyek fintech, pemerintahan, kesehatan, dan retail di Indonesia.',
       'hero.cta': 'Lihat Karya Saya',
-      'hero.cv': '⬇ Unduh CV',
+      'hero.cv': 'Unduh CV',
       'stat.apps': 'Aplikasi & Sistem Dirilis',
       'stat.years': 'Tahun Pengalaman',
       'stat.industries': 'Industri Dilayani',
@@ -781,7 +818,7 @@
       'feat.web.d': 'React, TypeScript, Vite, Zustand — kelola produk, outlet, laporan penjualan, dan karyawan dalam satu tempat',
       'feat.land.t': 'Landing Page',
       'feat.land.d': 'Next.js App Router, seluruh konten dikelola lewat data (data-driven)',
-      'feat.visit': 'Kunjungi lokakasir.id ↗',
+      'feat.visit': 'Kunjungi lokakasir.id',
       'proj.title': 'Proyek Pilihan',
       'proj.sub': 'Aplikasi yang saya bangun dan rilis untuk rumah sakit, instansi pemerintah, bank, dan perusahaan pembiayaan — klik screenshot untuk memperbesar.',
       'p.nexa.tag': 'Slicing Figma ke HTML — Landing Page Platform Cloud',
@@ -807,9 +844,9 @@
       'p.engine.tag': 'App Engine / Generator Admin — V12 Metaindigo',
       'p.engine.desc': 'Engine aplikasi V12 yang menjadi fondasi berbagai aplikasi admin: menu dinamis, manajemen peran & pengguna, dan kerangka CRUD langsung tersedia — tim cukup fokus pada logika bisnis tiap proyek baru tanpa membangun ulang kerangkanya. Dibangun dengan Vue.js dan Express.',
       'cv.sub': 'Perjalanan karier saya — dari asisten dosen hingga membangun produk sendiri.',
-      'cv.dl': '⬇ Unduh CV (PDF)',
+      'cv.dl': 'Unduh CV (PDF)',
       'cv.1.date': '2024 — SEKARANG',
-      'cv.1.place': 'Loka Kasir — Platform Point of Sale · <a href="https://www.lokakasir.id/" target="_blank" rel="noopener">lokakasir.id ↗</a>',
+      'cv.1.place': 'Loka Kasir — Platform Point of Sale · <a href="https://www.lokakasir.id/" target="_blank" rel="noopener">lokakasir.id <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a>',
       'cv.1.desc': 'Merancang dan membangun seluruh ekosistem POS untuk UMKM Indonesia, seorang diri:',
       'cv.1.li1': 'Backend Go (Gin, PostgreSQL, Redis) dengan arsitektur berlapis dan dukungan multi-outlet',
       'cv.1.li2': 'Aplikasi kasir Flutter untuk Android/iOS, responsif untuk HP & tablet',
@@ -839,10 +876,10 @@
       'cv.7.date': 'JAN 2019 — JAN 2020',
       'cv.7.title': 'Web Programmer',
       'cv.7.desc': 'Membangun aplikasi web pencatatan poin kinerja pegawai (dasar tunjangan tambahan) menggunakan Yii2 dan Vue.js, sekaligus menjaga aplikasi berjalan aman selama periode pencatatan.',
-      'cv.edu.title': '🎓 S1 Teknik Informatika',
+      'cv.edu.title': 'S1 Teknik Informatika',
       'cv.edu.place': 'UIN Sultan Syarif Kasim Riau — Fakultas Sains dan Teknologi',
       'cv.edu.desc': 'IPK 3,51/4,00 (145 SKS). Tiga kali dipercaya menjadi asisten dosen: Struktur Data, Teknologi Informasi Web, dan Algoritma Pemrograman.',
-      'cv.doc.t': '📄 Butuh CV dalam bentuk dokumen?',
+      'cv.doc.t': 'Butuh CV dalam bentuk dokumen?',
       'cv.doc.d': 'Unduh CV resmi saya dalam format PDF — ringkas dan siap untuk kebutuhan rekrutmen. Portfolio lengkap dengan screenshot bisa dilihat langsung di halaman ini.',
       'cv.doc.btn': 'Unduh CV (PDF)',
       'skill.title': 'Keahlian & Tools',
@@ -863,7 +900,7 @@
       'hero.hi': "Hi, I'm",
       'hero.sub': 'I build digital products end-to-end — Go backends, React dashboards, and Flutter & React Native apps shipped to the Play Store and App Store. Experienced across fintech, government, healthcare, and retail in Indonesia.',
       'hero.cta': 'View My Work',
-      'hero.cv': '⬇ Download CV',
+      'hero.cv': 'Download CV',
       'stat.apps': 'Apps & Systems Shipped',
       'stat.years': 'Years of Experience',
       'stat.industries': 'Industries Served',
@@ -881,7 +918,7 @@
       'feat.web.d': 'React, TypeScript, Vite, Zustand — manage products, outlets, sales reports, and employees in one place',
       'feat.land.t': 'Landing Page',
       'feat.land.d': 'Next.js App Router with fully data-driven content',
-      'feat.visit': 'Visit lokakasir.id ↗',
+      'feat.visit': 'Visit lokakasir.id',
       'proj.title': 'Selected Projects',
       'proj.sub': "Apps I've built and shipped for hospitals, government agencies, banks, and financing companies — click any screenshot to enlarge.",
       'p.nexa.tag': 'Figma-to-HTML Slicing — Cloud Platform Landing Page',
@@ -907,9 +944,9 @@
       'p.engine.tag': 'App Engine / Admin Generator — V12 Metaindigo',
       'p.engine.desc': 'The V12 application engine that underpins multiple admin apps: dynamic menus, role & user management, and CRUD scaffolding available out of the box — so each new project focuses on business logic instead of rebuilding the frame. Built with Vue.js and Express.',
       'cv.sub': 'My career journey — from lecturer assistant to building my own product.',
-      'cv.dl': '⬇ Download CV (PDF)',
+      'cv.dl': 'Download CV (PDF)',
       'cv.1.date': '2024 — PRESENT',
-      'cv.1.place': 'Loka Kasir — Point of Sale Platform · <a href="https://www.lokakasir.id/" target="_blank" rel="noopener">lokakasir.id ↗</a>',
+      'cv.1.place': 'Loka Kasir — Point of Sale Platform · <a href="https://www.lokakasir.id/" target="_blank" rel="noopener">lokakasir.id <svg class="icon"><use href="#i-arrow-up-right"></use></svg></a>',
       'cv.1.desc': 'Designing and building an entire POS ecosystem for Indonesian SMBs, solo:',
       'cv.1.li1': 'Go backend (Gin, PostgreSQL, Redis) with layered architecture and multi-outlet support',
       'cv.1.li2': 'Flutter cashier app for Android/iOS, responsive for phone & tablet',
@@ -939,10 +976,10 @@
       'cv.7.date': 'JAN 2019 — JAN 2020',
       'cv.7.title': 'Web Programmer',
       'cv.7.desc': 'Built a web app for recording employee performance points (the basis for extra allowances) using Yii2 and Vue.js, and kept it running safely throughout the recording period.',
-      'cv.edu.title': '🎓 Bachelor of Informatics Engineering',
+      'cv.edu.title': 'Bachelor of Informatics Engineering',
       'cv.edu.place': 'UIN Sultan Syarif Kasim Riau — Faculty of Science and Technology',
       'cv.edu.desc': 'GPA 3.51/4.00 (145 credits). Served three times as a lecturer assistant: Data Structures, Web Information Technology, and Programming Algorithms.',
-      'cv.doc.t': '📄 Need my CV as a document?',
+      'cv.doc.t': 'Need my CV as a document?',
       'cv.doc.d': 'Download my official CV as a PDF — concise and recruitment-ready. The full portfolio with screenshots lives right here on this page.',
       'cv.doc.btn': 'Download CV (PDF)',
       'skill.title': 'Skills & Tools',
