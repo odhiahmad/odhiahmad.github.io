@@ -1,0 +1,382 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #ffffff;
+  --color-bg-soft: #f4f6fd;
+  --color-card: #ffffff;
+  --color-border: #e2e7f4;
+  --color-text: #161c33;
+  --color-muted: #4d5878;
+  --color-accent: #4338ca;
+  --color-accent-2: #0f766e;
+  --color-accent-3: #86198f;
+  --color-accent-4: #c2410c;
+  --font-sans: var(--font-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+}
+
+:root {
+  --accent-soft: rgba(67, 56, 202, 0.1);
+  --accent-2-soft: rgba(15, 118, 110, 0.11);
+  --accent-3-soft: rgba(134, 25, 143, 0.1);
+  --accent-4-soft: rgba(194, 65, 12, 0.11);
+
+  /* fluid type scale — every step stays readable at 360px and never gets shouty at 1440px */
+  --t-xs: clamp(0.78rem, 0.76rem + 0.1vw, 0.82rem);
+  --t-sm: clamp(0.86rem, 0.83rem + 0.14vw, 0.92rem);
+  --t-base: clamp(0.95rem, 0.92rem + 0.16vw, 1.02rem);
+  --t-lg: clamp(1.04rem, 1rem + 0.22vw, 1.15rem);
+  --t-xl: clamp(1.2rem, 1.1rem + 0.5vw, 1.4rem);
+  --t-2xl: clamp(1.45rem, 1.25rem + 0.95vw, 2rem);
+  --t-3xl: clamp(1.75rem, 1.35rem + 1.9vw, 2.6rem);
+  --t-hero: clamp(2rem, 1.4rem + 3.2vw, 3.2rem);
+}
+
+/* These element rules MUST stay inside @layer base. Unlayered CSS outranks
+   anything in Tailwind's utilities layer no matter the specificity, so a bare
+   `a { color: inherit }` silently beats every text-* colour utility on links. */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* clears the sticky mobile header (profile bar + pill nav) on anchor jumps */
+    scroll-padding-top: 112px;
+  }
+  @media (min-width: 1024px) {
+    html {
+      scroll-padding-top: 32px;
+    }
+  }
+  body {
+  background:
+    radial-gradient(900px circle at 88% -8%, rgba(67, 56, 202, 0.06), transparent 55%),
+    radial-gradient(760px circle at -8% 12%, rgba(15, 118, 110, 0.05), transparent 55%),
+    radial-gradient(820px circle at 60% 108%, rgba(134, 25, 143, 0.05), transparent 55%),
+      linear-gradient(180deg, #ffffff, #f6f8fe);
+    background-attachment: fixed;
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--t-base);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+    overflow-x: hidden;
+  }
+
+  /* headings: tighter leading, slight negative tracking, no orphan words */
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.18;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  :where(a, button):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+}
+
+/* ---------- section heading gradient ----------
+   Stops stay inside the dark indigo→violet range so gradient headings keep
+   real contrast against white — the old orange stop washed out on light bg. */
+.head {
+  background: linear-gradient(96deg, var(--color-accent), #6d28d9 50%, var(--color-accent-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  width: fit-content;
+  max-width: 100%;
+}
+.container-x {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 640px) {
+  .container-x {
+    padding: 0 24px;
+  }
+}
+
+/* ---------- gradient text ---------- */
+.grad-text {
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-3), #0e7490, var(--color-accent));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: grad-slide 10s linear infinite;
+}
+@keyframes grad-slide {
+  to {
+    background-position: 300% 0;
+  }
+}
+
+/* ---------- caret ---------- */
+.caret {
+  display: inline-block;
+  width: 3px;
+  height: 0.95em;
+  margin-left: 3px;
+  background: var(--color-accent);
+  vertical-align: -0.12em;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---------- floating blobs ---------- */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.14;
+  pointer-events: none;
+  z-index: -1;
+  animation: float 14s ease-in-out infinite;
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(36px, -28px) scale(1.08);
+  }
+  66% {
+    transform: translate(-24px, 24px) scale(0.94);
+  }
+}
+
+/* ---------- reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--d, 0s);
+}
+.reveal.from-left {
+  transform: translateX(-48px);
+}
+.reveal.zoom {
+  transform: scale(0.94);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+/* sideways reveals cause horizontal overflow on narrow screens */
+@media (max-width: 640px) {
+  .reveal.from-left {
+    transform: translateY(24px);
+  }
+}
+
+/* ---------- shine on primary button ---------- */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+.btn-glow::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  /* kept deliberately faint: the sweep passes over button labels, and anything
+     stronger visibly dims white text mid-animation */
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.13), transparent);
+  animation: shine 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes shine {
+  0%,
+  55% {
+    left: -80%;
+  }
+  100% {
+    left: 160%;
+  }
+}
+
+/* ---------- card mouse glow ---------- */
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(67, 56, 202, 0.08), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+/* ---------- pulse glow on featured ---------- */
+.pulse-glow::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+  animation: pulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes pulse {
+  50% {
+    transform: scale(1.35);
+    opacity: 0.7;
+  }
+}
+
+/* ---------- timeline ---------- */
+.tl-line {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tl-line.grow {
+  transform: scaleY(1);
+}
+.tl-ping::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: 0;
+  animation: ping 2.6s ease-out infinite;
+}
+@keyframes ping {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---------- rotating border on contact ---------- */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.rot-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  z-index: -1;
+  background: conic-gradient(from var(--angle), transparent 70%, var(--color-accent), transparent);
+  animation: rotate-border 5s linear infinite;
+}
+@keyframes rotate-border {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* ---------- lightbox ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(5, 8, 12, 0.92);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  cursor: zoom-out;
+}
+.lightbox.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox img {
+  max-width: min(94vw, 1100px);
+  max-height: 82vh;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lightbox.open img {
+  transform: scale(1);
+}
+
+/* ---------- horizontal scrollers ---------- */
+.hide-scrollbar {
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  height: 5px;
+}
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
+}
+.snap-x-start {
+  scroll-snap-type: x mandatory;
+}
+.snap-x-start > * {
+  scroll-snap-align: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .tl-line {
+    transform: scaleY(1);
+  }
+}
