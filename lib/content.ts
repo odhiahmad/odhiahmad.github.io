@@ -27,6 +27,33 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
+    id: "sissi-accounting",
+    title: "Sissi Accounting",
+    year: "@2026",
+    tagKey: "p.sacc.tag",
+    descKey: "p.sacc.desc",
+    link: { href: "https://accounting.sissi.id/", labelId: "accounting.sissi.id", labelEn: "accounting.sissi.id" },
+    tags: ["React", "Vite", "SaaS", "Akuntansi"],
+    images: [
+      { src: "/assets/sissi-accounting-1.jpg", alt: "Sissi Accounting — landing page" },
+      { src: "/assets/sissi-accounting-2.jpg", alt: "Sissi Accounting — halaman masuk" },
+      { src: "/assets/sissi-accounting-3.jpg", alt: "Sissi Accounting — tampilan mobile" },
+    ],
+  },
+  {
+    id: "pustaka-seto",
+    title: "Perpustakaan Sekolah Kak Seto",
+    year: "@2026",
+    tagKey: "p.pustaka.tag",
+    descKey: "p.pustaka.desc",
+    link: { href: "https://pustaka-seto.sissi.id/", labelId: "pustaka-seto.sissi.id", labelEn: "pustaka-seto.sissi.id" },
+    tags: ["React", "Vite", "E-book", "Sekolah"],
+    images: [
+      { src: "/assets/pustaka-seto-1.jpg", alt: "Perpustakaan Sekolah Kak Seto — halaman masuk" },
+      { src: "/assets/pustaka-seto-2.jpg", alt: "Perpustakaan Sekolah Kak Seto — tampilan mobile" },
+    ],
+  },
+  {
     id: "klinika",
     title: "Klinika",
     year: "y.nexa",
