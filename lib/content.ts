@@ -33,7 +33,7 @@ export const PROJECTS: Project[] = [
     tagKey: "p.sacc.tag",
     descKey: "p.sacc.desc",
     link: { href: "https://accounting.sissi.id/", labelId: "accounting.sissi.id", labelEn: "accounting.sissi.id" },
-    tags: ["React", "Vite", "SaaS", "Akuntansi"],
+    tags: ["Go", "Gin", "PostgreSQL", "Redis", "Flutter", "React"],
     images: [
       { src: "/assets/sissi-accounting-1.jpg", alt: "Sissi Accounting — landing page" },
       { src: "/assets/sissi-accounting-2.jpg", alt: "Sissi Accounting — halaman masuk" },
@@ -47,7 +47,7 @@ export const PROJECTS: Project[] = [
     tagKey: "p.pustaka.tag",
     descKey: "p.pustaka.desc",
     link: { href: "https://pustaka-seto.sissi.id/", labelId: "pustaka-seto.sissi.id", labelEn: "pustaka-seto.sissi.id" },
-    tags: ["React", "Vite", "E-book", "Sekolah"],
+    tags: ["Go", "Gin", "PostgreSQL", "Redis", "Flutter", "React"],
     images: [
       { src: "/assets/pustaka-seto-1.jpg", alt: "Perpustakaan Sekolah Kak Seto — halaman masuk" },
       { src: "/assets/pustaka-seto-2.jpg", alt: "Perpustakaan Sekolah Kak Seto — tampilan mobile" },

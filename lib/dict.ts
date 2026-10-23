@@ -150,10 +150,10 @@ const id: Dict = {
   "skill.g.data": "Data & Infra",
   "p.sacc.tag": "Software Akuntansi Online — Ekosistem Sissi",
   "p.sacc.desc":
-    "Software akuntansi online untuk bisnis Indonesia: jurnal, buku besar, kas & bank, persediaan, aset, sampai laporan laba rugi dan neraca dalam satu alur — dari transaksi pertama sampai tutup buku. Akses tim per peran, dan terhubung langsung dengan Sissi Kasir supaya transaksi penjualan otomatis masuk ke pembukuan.",
+    "Software akuntansi online untuk bisnis Indonesia: jurnal, buku besar, kas & bank, persediaan, aset, sampai laporan laba rugi dan neraca dalam satu alur — dari transaksi pertama sampai tutup buku. Akses tim per peran, dan terhubung langsung dengan Sissi Kasir supaya transaksi penjualan otomatis masuk ke pembukuan. Dibangun dengan stack yang sama seperti Loka Kasir: backend Go, aplikasi Flutter, dan dashboard React.",
   "p.pustaka.tag": "Perpustakaan Digital Sekolah — Sekolah Kak Seto Pekanbaru",
   "p.pustaka.desc":
-    "Perpustakaan digital untuk Sekolah Kak Seto Cabang Pekanbaru: siswa mencari buku dan membaca e-book langsung dari katalog, masuk pakai nomor anggota atau NIS, sementara petugas mengelola koleksi dan keanggotaan. Katalog bisa dijelajahi tanpa login, dengan tampilan ramah anak yang tetap nyaman di HP.",
+    "Perpustakaan digital untuk Sekolah Kak Seto Cabang Pekanbaru: siswa mencari buku dan membaca e-book langsung dari katalog, masuk pakai nomor anggota atau NIS, sementara petugas mengelola koleksi dan keanggotaan. Katalog bisa dijelajahi tanpa login, dengan tampilan ramah anak. Dibangun dengan stack yang sama seperti Loka Kasir: backend Go, aplikasi Flutter, dan web React.",
 };
 
 const en: Dict = {
@@ -304,10 +304,10 @@ const en: Dict = {
   "skill.g.data": "Data & Infra",
   "p.sacc.tag": "Online Accounting Software — Sissi Ecosystem",
   "p.sacc.desc":
-    "Online accounting software for Indonesian businesses: journals, general ledger, cash & bank, inventory, fixed assets, and profit & loss and balance sheet reports in one flow — from the first transaction to closing the books. Role-based team access, and connected to Sissi Kasir so sales flow straight into the books.",
+    "Online accounting software for Indonesian businesses: journals, general ledger, cash & bank, inventory, fixed assets, and profit & loss and balance sheet reports in one flow — from the first transaction to closing the books. Role-based team access, and connected to Sissi Kasir so sales flow straight into the books. Built on the same stack as Loka Kasir: Go backend, Flutter app, and React dashboard.",
   "p.pustaka.tag": "Digital School Library — Sekolah Kak Seto Pekanbaru",
   "p.pustaka.desc":
-    "A digital library for Sekolah Kak Seto's Pekanbaru branch: students search for books and read e-books right from the catalog, signing in with their member number or student ID, while librarians manage the collection and memberships. The catalog is browsable without logging in, with a kid-friendly design that works well on phones.",
+    "A digital library for Sekolah Kak Seto's Pekanbaru branch: students search for books and read e-books right from the catalog, signing in with their member number or student ID, while librarians manage the collection and memberships. The catalog is browsable without logging in, with a kid-friendly design. Built on the same stack as Loka Kasir: Go backend, Flutter app, and React web.",
 };
 
 export const DICT: Record<Lang, Dict> = { id, en };
