@@ -8,9 +8,9 @@ export const SITE = {
   wa: "6285272993360",
   github: "https://github.com/odhiahmad",
   descId:
-    "Portfolio & CV Odhi Ahmad Hidayat — Full Stack Developer yang membangun aplikasi Android, iOS, dan Web dengan Go, Flutter, React, dan React Native. Berpengalaman di fintech, pemerintahan, kesehatan, dan retail.",
+    "Odhi Ahmad Hidayat — founder & developer Loka Kasir (lokakasir.id), aplikasi kasir untuk UMKM Indonesia. Full stack developer yang membangun aplikasi Android, iOS, dan Web dengan Go, Flutter, React, dan React Native. Berpengalaman di fintech, pemerintahan, kesehatan, dan retail.",
   descEn:
-    "Portfolio & CV of Odhi Ahmad Hidayat — Full Stack Developer building Android, iOS, and Web apps with Go, Flutter, React, and React Native. Experienced across fintech, government, healthcare, and retail.",
+    "Odhi Ahmad Hidayat — founder & developer of Loka Kasir (lokakasir.id), a point-of-sale app for Indonesian small businesses. Full stack developer building Android, iOS, and Web apps with Go, Flutter, React, and React Native. Experienced across fintech, government, healthcare, and retail.",
 };
 
 export type ProjectLink = { href: string; labelId: string; labelEn: string };
@@ -194,31 +194,13 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const SKILLS = [
-  "Go (Gin)",
-  "Flutter & Dart",
-  "React / React Native",
-  "TypeScript",
-  "Next.js",
-  "Vue.js",
-  "Laravel / PHP",
-  "Node.js / Express",
-  "PostgreSQL",
-  "MySQL",
-  "Redis",
-  "Riverpod / Redux / Zustand",
-  "Firebase",
-  "REST API Design",
-  "JWT Auth",
-  "Git & CI/CD",
+export const SKILLS: { key: string; items: string[] }[] = [
+  { key: "skill.g.be", items: ["Go (Gin)", "Node.js / Express", "Laravel / PHP", "REST API", "JWT Auth"] },
+  { key: "skill.g.mob", items: ["Flutter & Dart", "React Native", "Riverpod", "Redux", "Firebase"] },
+  { key: "skill.g.web", items: ["React", "TypeScript", "Next.js", "Vue.js", "Zustand", "Tailwind CSS"] },
+  { key: "skill.g.data", items: ["PostgreSQL", "MySQL", "Redis", "SQLite", "Git", "GitLab CI/CD"] },
 ];
 
-export const STATS = [
-  { icon: "rocket", count: 12, key: "stat.apps" },
-  { icon: "clock", count: 7, key: "stat.years" },
-  { icon: "building", count: 4, key: "stat.industries" },
-  { icon: "layers", count: 8, key: "stat.stacks" },
-];
 
 // Structural CV timeline (text pulled from dict by key).
 export type CvItem = {
