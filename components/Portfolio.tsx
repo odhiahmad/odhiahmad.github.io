@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLang } from "./lang";
 import { Icon } from "./icons";
 import { CV, PROJECTS, SKILLS, SITE, type Project } from "@/lib/content";
@@ -20,11 +20,11 @@ function Section({ id, label, title, children }: { id: string; label: string; ti
   return (
     <section id={id} className="border-t border-border py-14 sm:py-20">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-[180px_1fr] md:gap-10">
-        <div>
+        <div className="reveal">
           <Label>{label}</Label>
         </div>
         <div className="min-w-0">
-          <h2 className="mb-8 text-[1.6rem] font-bold sm:text-[2rem]">{title}</h2>
+          <h2 className="reveal mb-8 text-[1.6rem] font-bold sm:text-[2rem]">{title}</h2>
           {children}
         </div>
       </div>
@@ -63,10 +63,10 @@ const NAV = [
 function ProjectRow({ p, onZoom }: { p: Project; onZoom: (src: string, alt: string) => void }) {
   const { t, lang } = useLang();
   return (
-    <article className="grid grid-cols-1 gap-4 border-b border-border py-8 first:pt-0 last:border-0 sm:grid-cols-[1fr_auto]">
+    <article className="reveal group/row grid grid-cols-1 gap-4 border-b border-border py-8 first:pt-0 last:border-0 sm:grid-cols-[1fr_auto]">
       <div className="min-w-0 sm:order-1">
         <div className="mb-1 flex flex-wrap items-baseline gap-x-3">
-          <h3 className="text-[1.15rem] font-bold">{p.title}</h3>
+          <h3 className="text-[1.15rem] font-bold transition-colors group-hover/row:text-accent">{p.title}</h3>
           <span className="font-mono text-[0.75rem] text-muted">{t(p.year)}</span>
         </div>
         <div className="mb-3 text-[0.9rem] font-medium">{t(p.tagKey)}</div>
@@ -90,7 +90,7 @@ function ProjectRow({ p, onZoom }: { p: Project; onZoom: (src: string, alt: stri
             alt={img.alt}
             loading="lazy"
             onClick={() => onZoom(img.src, img.alt)}
-            className="h-[120px] w-auto max-w-none cursor-zoom-in rounded border border-border object-cover transition-opacity hover:opacity-80"
+            className="h-[120px] w-auto max-w-none cursor-zoom-in rounded border border-border object-cover transition duration-500 ease-out hover:-translate-y-1 hover:shadow-lg group-hover/row:border-text/30"
           />
         ))}
       </div>
@@ -98,9 +98,100 @@ function ProjectRow({ p, onZoom }: { p: Project; onZoom: (src: string, alt: stri
   );
 }
 
+/* Loka Kasir receipt that "prints" line by line whenever it scrolls into view. */
+const ITEMS: [string, number][] = [
+  ["Kopi Susu Gula Aren", 18000],
+  ["Roti Bakar Coklat", 15000],
+  ["Es Teh Manis x2", 10000],
+  ["Nasi Goreng Kampung", 25000],
+];
+const rp = (n: number) => "Rp" + n.toLocaleString("id-ID");
+
+function Receipt() {
+  const { t } = useLang();
+  const el = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState(0);
+  const [total, setTotal] = useState(0);
+  const sum = ITEMS.reduce((a, [, v]) => a + v, 0);
+  const last = ITEMS.length + 2; // items, then total, then the paid stamp
+
+  useEffect(() => {
+    const node = el.current;
+    if (!node) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStep(last);
+      setTotal(sum);
+      return;
+    }
+    let timers: ReturnType<typeof setTimeout>[] = [];
+    const run = () => {
+      timers.forEach(clearTimeout);
+      setStep(0);
+      setTotal(0);
+      timers = Array.from({ length: last }, (_, i) => setTimeout(() => setStep(i + 1), 500 + i * 550));
+      // total ticks up while the TOTAL line prints
+      const start = 500 + ITEMS.length * 550;
+      for (let f = 1; f <= 20; f++) timers.push(setTimeout(() => setTotal(Math.round((sum * f) / 20)), start + f * 25));
+      timers.push(setTimeout(run, 500 + last * 550 + 3500));
+    };
+    const obs = new IntersectionObserver(([e]) => (e.isIntersecting ? run() : timers.forEach(clearTimeout)), {
+      threshold: 0.4,
+    });
+    obs.observe(node);
+    return () => {
+      obs.disconnect();
+      timers.forEach(clearTimeout);
+    };
+  }, [last, sum]);
+
+  return (
+    <div ref={el} className="receipt relative mx-auto w-full max-w-[290px] font-mono text-[0.78rem]" aria-hidden>
+      <div className="rounded-t-md bg-[#fffdf8] px-5 pb-6 pt-5 text-[#2a2924] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.45)]">
+        <div className="text-center">
+          <div className="text-[0.95rem] font-medium tracking-[0.15em]">LOKA KASIR</div>
+          <div className="text-[0.68rem] text-[#8a867b]">Kedai Kopi Padang · #00{142 + step}</div>
+        </div>
+        <div className="my-3 border-t border-dashed border-[#cfcabd]" />
+        <div className="min-h-[96px] space-y-1">
+          {ITEMS.map(([name, price], i) => (
+            <div key={name} className={`line flex justify-between gap-3 ${step > i ? "on" : ""}`}>
+              <span className="truncate">{name}</span>
+              <span>{rp(price)}</span>
+            </div>
+          ))}
+        </div>
+        <div className="my-3 border-t border-dashed border-[#cfcabd]" />
+        <div className={`line flex justify-between font-medium ${step > ITEMS.length ? "on" : ""}`}>
+          <span>TOTAL</span>
+          <span className="tabular-nums">{rp(total)}</span>
+        </div>
+        <div className={`stamp mx-auto mt-4 w-fit -rotate-6 rounded border-2 border-[#b4410f] px-3 py-1 text-[0.8rem] font-medium tracking-[0.2em] text-[#b4410f] ${step >= last ? "on" : ""}`}>
+          {t("receipt.paid")}
+        </div>
+      </div>
+      <div className="receipt-edge h-3 w-full" />
+    </div>
+  );
+}
+
 export default function Portfolio() {
   const { t, lang } = useLang();
   const [lb, setLb] = useState<{ src: string; alt: string } | null>(null);
+
+  // fade sections in as they enter the viewport
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("in");
+          obs.unobserve(e.target);
+        }),
+      { rootMargin: "0px 0px -8% 0px" }
+    );
+    document.querySelectorAll(".reveal").forEach((n) => obs.observe(n));
+    return () => obs.disconnect();
+  }, []);
 
   // esc closes lightbox; lock body scroll while it is open
   useEffect(() => {
@@ -115,6 +206,7 @@ export default function Portfolio() {
 
   return (
     <>
+      <div className="progress fixed inset-x-0 top-0 z-50 h-[2px] origin-left bg-accent" aria-hidden />
       <nav className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
           <a href="#top" className="text-[0.95rem] font-bold">
@@ -136,24 +228,26 @@ export default function Portfolio() {
       <div id="top" className="mx-auto max-w-5xl px-4 sm:px-6">
         {/* HERO */}
         <header className="py-16 sm:py-24">
-          <Label>{t("hero.meta")}</Label>
-          <h1 className="mt-6 max-w-3xl text-[2.1rem] font-bold leading-[1.15] sm:text-[3rem]">
+          <div className="intro" style={{ ["--i" as string]: 0 }}>
+            <Label>{t("hero.meta")}</Label>
+          </div>
+          <h1 className="intro mt-6 max-w-3xl text-[2.1rem] font-bold leading-[1.15] sm:text-[3rem]" style={{ ["--i" as string]: 1 }}>
             {t("hero.pre")}{" "}
-            <a href={LOKA} target="_blank" rel="noopener" className="text-accent underline decoration-2 underline-offset-[6px]">
+            <a href={LOKA} target="_blank" rel="noopener" className="draw text-accent">
               Loka Kasir
             </a>
             {t("hero.post")}
           </h1>
-          <p className="mt-6 max-w-2xl text-[1.05rem] leading-relaxed text-muted">{t("hero.sub")}</p>
+          <p style={{ ["--i" as string]: 2 }} className="intro mt-6 max-w-2xl text-[1.05rem] leading-relaxed text-muted">{t("hero.sub")}</p>
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <div style={{ ["--i" as string]: 3 }} className="intro mt-9 flex flex-wrap items-center gap-3">
             <a
               href={LOKA}
               target="_blank"
               rel="noopener"
-              className="inline-flex items-center gap-2 rounded-md bg-text px-5 py-3 text-[0.92rem] font-semibold text-bg transition-opacity hover:opacity-85"
+              className="group inline-flex items-center gap-2 rounded-md bg-text px-5 py-3 text-[0.92rem] font-semibold text-bg transition-opacity hover:opacity-85"
             >
-              lokakasir.id <Icon name="arrow-up-right" className="h-4 w-4" />
+              lokakasir.id <Icon name="arrow-up-right" className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
             <a
               href="/cv-odhi-ahmad.pdf"
@@ -172,7 +266,7 @@ export default function Portfolio() {
             </a>
           </div>
 
-          <dl className="mt-14 grid grid-cols-2 gap-y-6 border-t border-border pt-6 sm:grid-cols-4">
+          <dl style={{ ["--i" as string]: 4 }} className="intro mt-14 grid grid-cols-2 gap-y-6 border-t border-border pt-6 sm:grid-cols-4">
             {["f.1", "f.2", "f.3", "f.4"].map((k) => (
               <div key={k}>
                 <dt className="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-muted">{t(`${k}.k`)}</dt>
@@ -184,17 +278,22 @@ export default function Portfolio() {
 
         {/* LOKA KASIR */}
         <Section id="loka" label={t("feat.label")} title="Loka Kasir">
-          <p className="max-w-2xl text-[1.02rem] leading-relaxed">{t("feat.desc")}</p>
-          <p className="mt-4 max-w-2xl text-[0.95rem] leading-relaxed text-muted">{t("feat.solo")}</p>
+          <div className="grid items-center gap-10 lg:grid-cols-[1fr_290px]">
+            <div className="reveal">
+              <p className="max-w-2xl text-[1.02rem] leading-relaxed">{t("feat.desc")}</p>
+              <p className="mt-4 max-w-2xl text-[0.95rem] leading-relaxed text-muted">{t("feat.solo")}</p>
+            </div>
+            <Receipt />
+          </div>
 
-          <div className="mt-10 grid border-t border-l border-border sm:grid-cols-2">
+          <div className="reveal mt-10 grid border-t border-l border-border sm:grid-cols-2">
             {[
               ["feat.be.t", "feat.be.d"],
               ["feat.mob.t", "feat.mob.d"],
               ["feat.web.t", "feat.web.d"],
               ["feat.land.t", "feat.land.d"],
             ].map(([ti, de]) => (
-              <div key={ti} className="border-r border-b border-border p-5">
+              <div key={ti} className="cell border-r border-b border-border p-5">
                 <div className="mb-1.5 font-semibold">{t(ti)}</div>
                 <p className="text-[0.9rem] leading-relaxed text-muted">{t(de)}</p>
               </div>
@@ -218,7 +317,7 @@ export default function Portfolio() {
         <Section id="experience" label={t("cv.label")} title={t("cv.title")}>
           <ol>
             {CV.map((item, i) => (
-              <li key={i} className="grid grid-cols-1 gap-1 border-b border-border py-6 first:pt-0 last:border-0 sm:grid-cols-[150px_1fr] sm:gap-6">
+              <li key={i} className="reveal grid grid-cols-1 gap-1 border-b border-border py-6 first:pt-0 last:border-0 sm:grid-cols-[150px_1fr] sm:gap-6">
                 <div className="font-mono text-[0.75rem] uppercase tracking-wide text-muted sm:pt-1">
                   {resolve(DICT[lang], item.dateKey)}
                 </div>
@@ -248,7 +347,7 @@ export default function Portfolio() {
 
         {/* SKILLS */}
         <Section id="skills" label={t("skill.label")} title={t("skill.title")}>
-          <dl className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
+          <dl className="reveal grid gap-x-10 gap-y-6 sm:grid-cols-2">
             {SKILLS.map((g) => (
               <div key={g.key}>
                 <dt className="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-muted">{t(g.key)}</dt>
